@@ -1,0 +1,14 @@
+node_modules/
+.next/
+out/
+dist/
+
+.env
+.env.*
+!.env.example
+
+*.log
+*.tsbuildinfo
+.DS_Store
+*.mov
+public/.DS_Store
