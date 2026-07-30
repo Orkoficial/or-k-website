@@ -154,21 +154,14 @@ export default function Home() {
     return ()=>observer.disconnect();
   }, []);
   useEffect(() => {
-    const touchMode=window.matchMedia("(hover: none)").matches;
-    if(!touchMode) return;
+    const responsiveMode=window.matchMedia("(max-width: 900px)").matches;
+    if(!responsiveMode) return;
     const cards=Array.from(document.querySelectorAll<HTMLElement>(".serviceCard"));
     const observer=new IntersectionObserver((entries)=>{
       entries.forEach((entry)=>{
         const card=entry.target as HTMLElement;
         const video=card.querySelector("video");
         if(entry.isIntersecting){
-          cards.forEach((other)=>{
-            if(other!==card){
-              other.classList.remove("isTouchPlaying");
-              const otherVideo=other.querySelector("video");
-              if(otherVideo){otherVideo.pause();otherVideo.currentTime=0;}
-            }
-          });
           card.classList.add("isTouchPlaying");
           if(video) void video.play().catch(()=>{});
         }else{
@@ -176,7 +169,7 @@ export default function Home() {
           if(video){video.pause();video.currentTime=0;}
         }
       });
-    },{rootMargin:"-25% 0px -25%",threshold:.55});
+    },{rootMargin:"5% 0px 5%",threshold:.28});
     cards.forEach((card)=>observer.observe(card));
     return ()=>observer.disconnect();
   }, []);
