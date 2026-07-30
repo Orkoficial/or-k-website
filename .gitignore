@@ -12,3 +12,4 @@ dist/
 .DS_Store
 *.mov
 public/.DS_Store
+.vercel

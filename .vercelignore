@@ -1,0 +1,4 @@
+*.mov
+.git
+.next
+node_modules
