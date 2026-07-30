@@ -455,3 +455,238 @@ html,body{max-width:100%;overflow-x:hidden}.hero{--hero-x:0;--hero-y:0}
   .editorialIdentity .caption h3{font-size:24px}
   .editorialIdentity .contact{min-height:760px}
 }
+
+/* Mobile composition pass — preserves the desktop editorial system. */
+@media(max-width:700px){
+  .editorialIdentity>nav{position:absolute}
+  .editorialIdentity>nav .navlinks a:last-child{
+    min-height:42px;
+    display:flex;
+    align-items:center;
+    font-size:8px;
+    white-space:nowrap;
+  }
+
+  .editorialIdentity .heroMedia .orkHomeFilm{
+    object-position:57% center;
+    transform:scale(1.005);
+  }
+  .editorialIdentity .heroMedia:has(.orkHomeFilm):before{
+    background:linear-gradient(0deg,rgba(17,16,15,.22),transparent 34%);
+  }
+  .editorialIdentity .marquee{height:39px;padding:8px 0}
+  .editorialIdentity .marquee div{font-size:15px}
+
+  .editorialIdentity .intro{
+    padding:23vw 4vw 10vw;
+  }
+  .manifestoHint{
+    top:9vw;
+    right:4vw;
+    max-width:58vw;
+    justify-content:flex-end;
+    text-align:right;
+    line-height:1.35;
+  }
+  .editorialIdentity .manifesto{
+    margin:8vh 0 11vh;
+    font-size:11.5vw;
+    line-height:.9;
+    letter-spacing:-.012em;
+  }
+  .editorialIdentity .manifesto>span{
+    width:fit-content;
+    max-width:96%;
+    padding-right:.08em;
+  }
+  .editorialIdentity .manifesto span:nth-child(2){
+    margin:1.4vh 0 2.2vh;
+    padding:.08em .16em .1em;
+  }
+  .editorialIdentity .manifesto span:nth-child(2):before{
+    inset:-.01em -.12em -.03em -.08em;
+  }
+  .manifestoAside{
+    padding-top:17px;
+    grid-template-columns:.9fr 1.1fr;
+    gap:22px;
+    margin-bottom:12vw;
+  }
+  .manifestoAside>span{font-size:25px}
+  .manifestoAside p{font-size:9px;line-height:1.5}
+  .manifestoAside small{font-size:7px}
+  .editorialIdentity .introFoot{padding-bottom:2vw}
+
+  .editorialIdentity .sectorRail{padding:14px 4vw}
+  .editorialIdentity .sectorRail b{font-size:18px}
+
+  .editorialIdentity .meetZceo{
+    height:760px;
+    min-height:760px;
+    padding:70px 0 90px;
+    align-items:center;
+  }
+  .editorialIdentity .meetWord{
+    gap:0;
+    align-items:center;
+    justify-content:center;
+  }
+  .editorialIdentity .meetWord>strong{
+    position:absolute;
+    z-index:3;
+    font-size:25vw;
+    line-height:.75;
+  }
+  .editorialIdentity .meetWord .wordLeft{left:-2vw;top:12%}
+  .editorialIdentity .meetWord .wordRight{right:-2vw;bottom:12%}
+  .editorialIdentity .meetPortrait{
+    width:76vw;
+    height:94vw;
+    min-width:0;
+    min-height:0;
+    max-width:310px;
+    max-height:390px;
+  }
+  .editorialIdentity .meetNote{
+    left:5vw;
+    top:auto;
+    bottom:31px;
+    font-size:10px;
+  }
+  .editorialIdentity .meetManifesto{
+    right:5vw;
+    bottom:31px;
+    max-width:52vw;
+    font-size:21px;
+  }
+  .editorialIdentity .ghostLetter{font-size:44vw}
+
+  .editorialIdentity .work,
+  .editorialIdentity .services{
+    padding-left:4vw;
+    padding-right:4vw;
+  }
+  .editorialIdentity .work h2,
+  .editorialIdentity .services h2{
+    font-size:18vw;
+    line-height:.8;
+  }
+  .editorialIdentity .projects{margin-top:18vw}
+  .editorialIdentity .project,
+  .editorialIdentity .project:nth-child(3){
+    margin-bottom:22vw;
+  }
+  .editorialIdentity .caption{
+    grid-template-columns:minmax(0,1fr) auto;
+    column-gap:12px;
+  }
+  .editorialIdentity .caption h3{
+    min-width:0;
+    font-size:22px;
+    line-height:.95;
+  }
+  .editorialIdentity .caseMethod{margin-top:2vw}
+
+  .serviceBrief{
+    margin-top:9vw;
+    padding-top:14px;
+  }
+  .serviceBrief>p{
+    max-width:92%;
+    font-size:8vw;
+    line-height:1.02;
+  }
+  .serviceBrief span{
+    min-height:36px;
+    display:flex;
+    align-items:center;
+  }
+  .serviceCards{margin-top:18vw}
+  .serviceCard,
+  .serviceCard:nth-child(even){
+    margin-bottom:23vw;
+  }
+  .serviceMedia{aspect-ratio:4/4.5}
+  .serviceNumber{font-size:25vw;top:-.75em}
+  .serviceCard h3{
+    font-size:27px;
+    gap:9px;
+  }
+  .serviceCard h3 b{
+    flex:0 0 34px;
+    width:34px;
+    height:34px;
+  }
+  .serviceCard p{
+    max-width:92%;
+    font-size:13px;
+    line-height:1.45;
+  }
+
+  .editorialIdentity .contact{
+    min-height:720px;
+    padding:22vw 5vw 12vw;
+  }
+  .editorialIdentity .contact:after{
+    width:88vw;
+    height:88vw;
+    right:-48vw;
+    top:18%;
+  }
+  .editorialIdentity .contact h2{
+    margin:8vh 0 10vh;
+    font-size:14.1vw;
+  }
+  .editorialIdentity .contactWord{max-width:100%}
+  .contactMeta{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:30px;
+  }
+  .contactLaunch{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    font-size:18px;
+    line-height:1.15;
+  }
+  .contactLaunch span{margin-left:16px}
+  .contactPanel{
+    position:fixed!important;
+    padding:72px 6vw 30px;
+  }
+  .contactClose{
+    width:42px;
+    height:42px;
+    top:18px;
+    right:6vw;
+  }
+  .contactPanel h3{
+    margin:25px 0 35px;
+    font-size:13.5vw;
+  }
+  .contactPanel input,
+  .contactPanel select,
+  .contactPanel textarea{
+    font-size:16px;
+  }
+
+  .soundToggle{
+    width:44px;
+    height:44px;
+    padding:0;
+    justify-content:center;
+  }
+  .editorialIdentity .brandLogo{
+    min-height:44px;
+  }
+}
+
+@media(max-width:380px){
+  .editorialIdentity .brandLogo{width:84px}
+  .editorialIdentity>nav .navlinks a:last-child{padding-left:11px}
+  .editorialIdentity .manifesto{font-size:11.1vw}
+  .editorialIdentity .meetPortrait{width:74vw}
+  .editorialIdentity .contact h2{font-size:13.6vw}
+}

@@ -147,7 +147,7 @@ export default function Home() {
     const observer = new IntersectionObserver((entries)=>{
       entries.forEach((entry)=>{
         const video=entry.target as HTMLVideoElement;
-        if(entry.isIntersecting) void video.play();
+        if(entry.isIntersecting) void video.play().catch(()=>{});
         else video.pause();
       });
     },{rootMargin:"120px 0px",threshold:.18});
@@ -171,7 +171,7 @@ export default function Home() {
             }
           });
           card.classList.add("isTouchPlaying");
-          if(video) void video.play();
+          if(video) void video.play().catch(()=>{});
         }else{
           card.classList.remove("isTouchPlaying");
           if(video){video.pause();video.currentTime=0;}
@@ -333,7 +333,7 @@ export default function Home() {
     <section className="services" id="servicios">
       <span className="sectionNo">03 / Lo que hacemos</span><h2 className="serviceHeading"><span className="serviceTitleLine">De la idea</span><span className="serviceTitleLine serviceTitleLineTwo">al <i>impacto.</i></span></h2>
       <div className="serviceBrief"><p>Marca. Pauta. Plataformas. IA. Todo con dirección.</p><div><span>Marca</span><span>Rendimiento</span><span>Producto</span><span>IA</span></div></div>
-      <div className="serviceCards">{services.map((service,i)=><article className="serviceCard" style={{"--card-delay":`${i * .13}s`} as React.CSSProperties} key={service.title} onPointerEnter={(event)=>{if(window.matchMedia("(hover:hover)").matches){const video=event.currentTarget.querySelector("video");if(video) void video.play();}}} onPointerLeave={(event)=>{if(window.matchMedia("(hover:hover)").matches){const video=event.currentTarget.querySelector("video");if(video){video.pause();video.currentTime=0;}}}}><span className="serviceNumber">0{i+1}</span><div className="serviceMedia"><img src={service.media} alt="" loading="lazy" decoding="async"/>{service.motion&&<video className="serviceHoverVideo" muted loop playsInline preload="none" poster={service.media}><source src={service.motion} type="video/mp4"/></video>}</div><span className="serviceLabel">Servicio</span><h3>{service.title}<b>↗</b></h3><p>{service.desc}</p></article>)}</div>
+      <div className="serviceCards">{services.map((service,i)=><article className="serviceCard" style={{"--card-delay":`${i * .13}s`} as React.CSSProperties} key={service.title} onPointerEnter={(event)=>{if(window.matchMedia("(hover:hover)").matches){const video=event.currentTarget.querySelector("video");if(video) void video.play().catch(()=>{});}}} onPointerLeave={(event)=>{if(window.matchMedia("(hover:hover)").matches){const video=event.currentTarget.querySelector("video");if(video){video.pause();video.currentTime=0;}}}}><span className="serviceNumber">0{i+1}</span><div className="serviceMedia"><img src={service.media} alt="" loading="lazy" decoding="async"/>{service.motion&&<video className="serviceHoverVideo" muted loop playsInline preload="none" poster={service.media}><source src={service.motion} type="video/mp4"/></video>}</div><span className="serviceLabel">Servicio</span><h3>{service.title}<b>↗</b></h3><p>{service.desc}</p></article>)}</div>
     </section>
 
     <section className="contact" id="contacto" onPointerMove={(event)=>{
