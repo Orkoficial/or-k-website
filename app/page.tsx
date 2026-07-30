@@ -12,8 +12,7 @@ const services = [
   {title:"Contenido y motion",desc:"Dirección visual, producción y movimiento para sostener la atención.",media:"/assets/ork-service-motion-v2.png",motion:"/assets/ork-service-motion-motion.mp4"},
 ];
 const heroClips = [
-  "/assets/zceo-symbol-campaign.m4v",
-  "/assets/zceo-editorial-stories.mp4",
+  "/assets/ork-home-whale.mp4",
 ];
 const sectors = [
   "TECNOLOGÍA",
@@ -265,9 +264,7 @@ export default function Home() {
       event.currentTarget.style.setProperty("--hero-y", "0");
     }}>
       <div className={`heroMedia tone-${heroClip}`}>
-        {heroClip === 0
-          ? <video className="orkHomeFilm" autoPlay muted playsInline preload="auto" poster="/assets/ork-home-whale-poster.png" onEnded={advanceHero}><source src="/assets/ork-home-whale.mp4" type="video/mp4"/></video>
-          : <video key={heroClips[heroClip]} autoPlay muted playsInline preload="auto" poster="/assets/zceo-digital-poster.jpg" onEnded={advanceHero}><source src={heroClips[heroClip]} /></video>}
+        <video className="orkHomeFilm" autoPlay muted loop playsInline preload="auto" poster="/assets/ork-home-whale-poster.png"><source src={heroClips[0]} type="video/mp4"/></video>
       </div>
       <div className="heroShade" />
       <div className={`heroTransition ${heroTransition ? "isActive" : ""}`} aria-hidden="true"><i/><span>O R-K</span></div>
