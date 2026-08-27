@@ -411,7 +411,7 @@ export default function Home() {
     <nav>
       <a className="logo brandLogo" href="#inicio" aria-label="O R-K inicio"><img src="/assets/ork-logo-white.png" alt="O R-K"/></a>
       <button className="navHow" type="button" onClick={()=>setHowOpen(true)}><span>Explora UTS Method</span><b>↗</b></button>
-      <div className="navlinks"><a href="#trabajo">Trabajo</a><a href="#servicios">Método UTS</a><a href="#nosotros">Nosotros</a><a href="#contacto">Hablemos</a></div>
+      <div className="navlinks"><a href="#trabajo">Trabajo</a><a href="#servicios">Método UTS</a><a href="#nosotros" onClick={()=>setTeamOpen(true)}>Nosotros</a><a href="#contacto">Hablemos</a></div>
     </nav>
 
     {howOpen&&<div className="howOverlay" role="dialog" aria-modal="true" aria-label="Cómo funciona O R-K">
@@ -505,7 +505,7 @@ export default function Home() {
       <span className="sectionNo">02 / Regla del método</span>
       <span className="manifestoHint" aria-hidden="true">{manifestoOrganized?"Composición activa":"Haz clic o desplázate para ordenar"} <i>↘</i></span>
       <p className="manifesto"><span>No transformamos</span><span>lo que no hemos entendido.</span><span>No escalamos</span><span><em>lo que no hemos</em> transformado.</span></p>
-      <aside className="manifestoAside"><span>Creativity<br/>with direction</span><b>↘</b><p>Convertimos atención en acción y estrategia en una presencia cultural propia.</p><button className="teamLaunch" type="button" onClick={(event)=>{event.stopPropagation();setTeamOpen(true);}}>Conoce nuestro equipo <span>↗</span></button><small>Bogotá · Colombia<br/>04°36&apos;N / 74°05&apos;W</small></aside>
+      <aside className="manifestoAside"><span>Creativity<br/>with direction</span><b>↘</b><p>Convertimos atención en acción y estrategia en una presencia cultural propia.</p><button className="teamLaunch" type="button" onClick={(event)=>{event.stopPropagation();setTeamOpen(true);}}><span className="teamLaunchLabel">Conoce nuestro equipo</span> <span className="teamLaunchArrow">↗</span></button><small>Bogotá · Colombia<br/>04°36&apos;N / 74°05&apos;W</small></aside>
       <div className="introFoot"><span>Desde Colombia<br/>para cualquier pantalla.</span><span className="asterisk">✳</span></div>
     </section>
 
