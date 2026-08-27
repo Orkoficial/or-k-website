@@ -442,10 +442,14 @@ export default function Home() {
         <h2 className="teamTitle">Personas detrás<br/><i>de la estrategia.</i></h2>
         <p className="teamIntro">Estrategia, creatividad y tecnología trabajando en la misma mesa.</p>
         <div className="teamGrid">
-          {teamMembers.map((member,index)=><article className="teamCard" key={index}>
-            <div className="teamPhoto"><img src={member.photo} alt={member.name} decoding="async"/></div>
+          {teamMembers.map((member,index)=><article className="teamCard" style={{"--card-index":index} as React.CSSProperties} key={index}>
+            <div className="teamPhoto">
+              <img src={member.photo} alt={member.name} decoding="async"/>
+              <span className="teamPhotoGrade" aria-hidden="true"/>
+              <span className="teamPhotoArrow" aria-hidden="true">↗</span>
+            </div>
             <h3>{member.name}</h3>
-            <span>{member.role}</span>
+            <span className="teamRole">{member.role}</span>
             <p>{member.bio}</p>
           </article>)}
         </div>
