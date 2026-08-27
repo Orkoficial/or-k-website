@@ -81,7 +81,7 @@ const projects = [
     {src:"/assets/project-peluvi-film.mp4",duration:4000},
     {src:"/assets/project-peluvi-ecosystem.png",duration:6000,kind:"image" as const},
   ]},
-  {title:"GGEU",url:"https://geu-navy.vercel.app/",meta:"Identidad corporativa / Sistema visual",year:"2026",kind:"image",media:"/assets/project-ggeu.jpg"},
+  {title:"GEU",url:"https://geu-navy.vercel.app/",meta:"Identidad corporativa / Sistema visual",year:"2026",kind:"image",media:"/assets/project-ggeu.jpg"},
   {title:"Totalpars",url:"https://unipars-tech.vercel.app",meta:"Identidad corporativa / Diseño de marca",year:"2026",kind:"image",media:"/assets/project-totalpars.jpg"},
   {title:"Drokex",url:"https://drokex.com",meta:"Identidad de marca / Plataforma digital",year:"2026",kind:"image",media:"/assets/project-drokex.jpg"},
 ];
