@@ -291,6 +291,30 @@ html,body{max-width:100%;overflow-x:hidden}.hero{--hero-x:0;--hero-y:0}
 .manifestoAside>b{display:block;margin:18px 0 42px;color:var(--ork-pink);font:400 34px/1 "DM Sans",sans-serif}
 .manifestoAside p{font-size:10px;line-height:1.5;letter-spacing:.08em;text-transform:none;max-width:220px}
 .manifestoAside small{display:block;margin-top:30px;font-size:8px;line-height:1.55;letter-spacing:.14em;color:var(--ork-pink)}
+.teamLaunch{display:inline-flex;align-items:center;gap:14px;margin-top:26px;padding:11px 0 10px;border:0;border-bottom:1px solid var(--ork-pink);background:transparent;color:var(--ork-ink);text-transform:uppercase;font-size:9px;font-weight:600;letter-spacing:.16em;cursor:pointer;transition:gap .25s}
+.teamLaunch span{color:var(--ork-pink);font-size:13px}
+.teamLaunch:hover,.teamLaunch:focus-visible{gap:22px}
+.teamOverlay{position:fixed;z-index:500;inset:0;background:var(--ork-ink);color:var(--ork-paper-light);overflow-y:auto;animation:howOpen .55s cubic-bezier(.16,.8,.2,1) both}
+.teamHeader{position:sticky;z-index:4;top:0;height:72px;padding:0 3vw;display:flex;align-items:center;border-bottom:1px solid rgba(255,255,255,.2);background:rgba(17,16,15,.9);backdrop-filter:blur(10px)}
+.teamHeader img{width:105px;height:42px;object-fit:contain}
+.teamHeader>span{margin-left:5vw;font-size:8px;letter-spacing:.16em;text-transform:uppercase;opacity:.65}
+.teamHeader button{margin-left:auto;border:0;background:transparent;color:inherit;display:flex;align-items:center;gap:14px;font-size:8px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer}
+.teamHeader button b{display:grid;place-items:center;width:32px;height:32px;background:var(--ork-pink);font:400 23px/1 sans-serif}
+.teamBody{padding:8vh 5vw 12vh;max-width:1500px;margin:0 auto}
+.teamTitle{margin:0;font:400 clamp(46px,6.5vw,104px)/.86 "Anton",Impact,sans-serif;text-transform:uppercase;letter-spacing:-.02em}
+.teamTitle i{color:var(--ork-pink);font-style:normal}
+.teamIntro{margin:3vh 0 6vh;max-width:520px;font-size:clamp(14px,1.3vw,19px);line-height:1.4;color:rgba(255,255,255,.66)}
+.teamGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:2vw}
+.teamCard{display:flex;flex-direction:column}
+.teamPhoto{aspect-ratio:4/5;overflow:hidden;background:var(--ork-purple);margin-bottom:20px}
+.teamPhoto img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);transition:filter .5s ease,transform .6s cubic-bezier(.16,.8,.2,1)}
+.teamCard:hover .teamPhoto img,.teamCard:focus-within .teamPhoto img{filter:grayscale(0) contrast(1);transform:scale(1.04)}
+.teamCard h3{margin:0 0 6px;font:400 clamp(20px,1.7vw,28px)/1 "Anton",Impact,sans-serif;text-transform:uppercase}
+.teamCard span{font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--ork-pink)}
+.teamCard p{margin:12px 0 0;font-size:11px;line-height:1.55;color:rgba(255,255,255,.62)}
+@media(max-width:1100px){.teamGrid{grid-template-columns:repeat(3,1fr);gap:3vw}}
+@media(max-width:900px){.teamGrid{grid-template-columns:repeat(2,1fr);gap:5vw}}
+@media(max-width:560px){.teamGrid{grid-template-columns:1fr}.teamHeader>span{display:none}.teamBody{padding:6vh 6vw 12vh}}
 .editorialIdentity .introFoot{border-color:var(--ork-rule)}
 .editorialIdentity .asterisk{color:var(--ork-pink)}
 

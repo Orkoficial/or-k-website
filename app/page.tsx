@@ -86,6 +86,14 @@ const projects = [
   {title:"Drokex",url:"https://drokex.com",meta:"Identidad de marca / Plataforma digital",year:"2026",kind:"image",media:"/assets/project-drokex.jpg"},
 ];
 
+const teamMembers = [
+  {name:"Nombre Apellido",role:"Fundador & Director General",photo:"/assets/team-01.png",bio:"Breve descripción pendiente."},
+  {name:"Nombre Apellido",role:"Directora de Estrategia",photo:"/assets/team-02.png",bio:"Breve descripción pendiente."},
+  {name:"Nombre Apellido",role:"Director Creativo",photo:"/assets/team-03.png",bio:"Breve descripción pendiente."},
+  {name:"Nombre Apellido",role:"Director de Tecnología",photo:"/assets/team-04.png",bio:"Breve descripción pendiente."},
+  {name:"Nombre Apellido",role:"Dirección de Arte",photo:"/assets/team-05.jpg",bio:"Breve descripción pendiente."},
+];
+
 function ProjectMotion({poster,title,clips}:{poster:string;title:string;clips:{src:string;duration:number;kind?:"image"|"video";startAt?:number}[]}){
   const [activeClip,setActiveClip]=useState(-1);
   const videoRefs=useRef<(HTMLVideoElement|null)[]>([]);
@@ -116,6 +124,7 @@ export default function Home() {
   const [soundEnabled, setSoundEnabled] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [howOpen, setHowOpen] = useState(false);
+  const [teamOpen, setTeamOpen] = useState(false);
   const [howProgress, setHowProgress] = useState(0);
   const projectRail = useRef<HTMLDivElement>(null);
   const howRail = useRef<HTMLDivElement>(null);
@@ -175,6 +184,16 @@ export default function Home() {
     window.addEventListener("keydown",close);
     return ()=>{document.body.style.overflow=previous;document.documentElement.style.overflow=previousHtml;window.removeEventListener("keydown",close);};
   },[howOpen]);
+  useEffect(() => {
+    if(!teamOpen) return;
+    const previous=document.body.style.overflow;
+    const previousHtml=document.documentElement.style.overflow;
+    document.body.style.overflow="hidden";
+    document.documentElement.style.overflow="hidden";
+    const close=(event:KeyboardEvent)=>{if(event.key==="Escape") setTeamOpen(false);};
+    window.addEventListener("keydown",close);
+    return ()=>{document.body.style.overflow=previous;document.documentElement.style.overflow=previousHtml;window.removeEventListener("keydown",close);};
+  },[teamOpen]);
   useEffect(()=>{
     if(!howOpen||howTarget.current===null) return;
     const rail=howRail.current;
@@ -417,6 +436,22 @@ export default function Home() {
       </div>
     </div>}
 
+    {teamOpen&&<div className="teamOverlay" role="dialog" aria-modal="true" aria-label="Conoce nuestro equipo">
+      <header className="teamHeader"><img src="/assets/ork-logo-white.png" alt="O R-K"/><span>Nosotros / El equipo</span><button type="button" onClick={()=>setTeamOpen(false)} aria-label="Cerrar">Cerrar <b>×</b></button></header>
+      <div className="teamBody">
+        <h2 className="teamTitle">Personas detrás<br/><i>de la estrategia.</i></h2>
+        <p className="teamIntro">Estrategia, creatividad y tecnología trabajando en la misma mesa.</p>
+        <div className="teamGrid">
+          {teamMembers.map((member,index)=><article className="teamCard" key={index}>
+            <div className="teamPhoto"><img src={member.photo} alt={member.name} decoding="async"/></div>
+            <h3>{member.name}</h3>
+            <span>{member.role}</span>
+            <p>{member.bio}</p>
+          </article>)}
+        </div>
+      </div>
+    </div>}
+
     <section className="hero" id="inicio" onPointerMove={(event)=>{
       const bounds = event.currentTarget.getBoundingClientRect();
       event.currentTarget.style.setProperty("--hero-x", `${((event.clientX - bounds.left) / bounds.width - .5) * 2}`);
@@ -466,7 +501,7 @@ export default function Home() {
       <span className="sectionNo">02 / Regla del método</span>
       <span className="manifestoHint" aria-hidden="true">{manifestoOrganized?"Composición activa":"Haz clic o desplázate para ordenar"} <i>↘</i></span>
       <p className="manifesto"><span>No transformamos</span><span>lo que no hemos entendido.</span><span>No escalamos</span><span><em>lo que no hemos</em> transformado.</span></p>
-      <aside className="manifestoAside"><span>Creativity<br/>with direction</span><b>↘</b><p>Convertimos atención en acción y estrategia en una presencia cultural propia.</p><small>Bogotá · Colombia<br/>04°36&apos;N / 74°05&apos;W</small></aside>
+      <aside className="manifestoAside"><span>Creativity<br/>with direction</span><b>↘</b><p>Convertimos atención en acción y estrategia en una presencia cultural propia.</p><button className="teamLaunch" type="button" onClick={(event)=>{event.stopPropagation();setTeamOpen(true);}}>Conoce nuestro equipo <span>↗</span></button><small>Bogotá · Colombia<br/>04°36&apos;N / 74°05&apos;W</small></aside>
       <div className="introFoot"><span>Desde Colombia<br/>para cualquier pantalla.</span><span className="asterisk">✳</span></div>
     </section>
 
