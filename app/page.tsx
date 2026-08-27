@@ -344,7 +344,7 @@ export default function Home() {
   };
   const startProjectDrag = (e: React.PointerEvent<HTMLDivElement>) => {
     const rail = projectRail.current;
-    if (!rail) return;
+    if (!rail || e.pointerType !== "mouse") return;
     const link=(e.target as HTMLElement).closest<HTMLAnchorElement>(".projectTarget");
     projectDrag.current = { active: true, moved: false, startX: e.clientX, scrollLeft: rail.scrollLeft, url: link?.href??"" };
     rail.setPointerCapture(e.pointerId);
@@ -363,12 +363,10 @@ export default function Home() {
   const stopProjectDrag = (e: React.PointerEvent<HTMLDivElement>) => {
     const rail = projectRail.current;
     if (!rail) return;
-    const shouldOpen=projectDrag.current.active&&!projectDrag.current.moved&&Boolean(projectDrag.current.url);
-    const url=projectDrag.current.url;
     projectDrag.current.active = false;
     if (rail.hasPointerCapture(e.pointerId)) rail.releasePointerCapture(e.pointerId);
     rail.classList.remove("isDragging");
-    if(shouldOpen) window.open(url,"_blank","noopener,noreferrer");
+    window.setTimeout(()=>{projectDrag.current.moved=false;},0);
   };
   const moveProjects = (direction:-1|1) => {
     const rail=projectRail.current;
@@ -535,7 +533,7 @@ export default function Home() {
         <button className="projectNav next" type="button" tabIndex={-1} onClick={()=>moveProjects(1)} aria-label="Proyecto siguiente">→</button>
         <div className="projects" ref={projectRail} tabIndex={0} role="region" aria-label="Carrusel de proyectos, usa las flechas del teclado para navegar" onKeyDown={(event)=>{if(event.key==="ArrowRight"){event.preventDefault();moveProjects(1);}else if(event.key==="ArrowLeft"){event.preventDefault();moveProjects(-1);}}} onPointerDown={startProjectDrag} onPointerMove={moveProjectDrag} onPointerUp={stopProjectDrag} onPointerCancel={stopProjectDrag} onPointerLeave={(e)=>projectDrag.current.active&&stopProjectDrag(e)}>
           {projects.map((project, index)=><article className={`project p${index+1}`} key={project.title}>
-            <a className="projectTarget" href={project.url} target="_blank" rel="noreferrer" draggable="false" aria-label={`Visitar sitio web de ${project.title}`} onDragStart={(event)=>event.preventDefault()} onClick={(event)=>{if(event.detail>0) event.preventDefault();}}>
+            <a className="projectTarget" href={project.url} target="_blank" rel="noreferrer" draggable="false" aria-label={`Visitar sitio web de ${project.title}`} onDragStart={(event)=>event.preventDefault()} onClick={(event)=>{if(projectDrag.current.moved) event.preventDefault();}}>
               {project.motion?<ProjectMotion poster={project.media} title={project.title} clips={project.motion}/>:<div className="visual projectImage"><img src={project.media} alt={`Proyecto ${project.title}`} draggable="false" loading="lazy" decoding="async"/></div>}
               <div className="caption"><h3>{project.title}</h3><p>{project.meta}</p><span>{project.year} ↗</span></div>
             </a>
