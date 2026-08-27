@@ -18,8 +18,8 @@ export function MetricCard({
       <p
         className={cn(
           "font-mono text-2xl font-semibold tabular-nums",
-          tone === "warn" && "text-amber-300",
-          tone === "positive" && "text-emerald-300",
+          tone === "warn" && "text-tone-warn",
+          tone === "positive" && "text-tone-positive",
         )}
       >
         {value}

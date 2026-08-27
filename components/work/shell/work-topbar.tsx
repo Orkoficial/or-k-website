@@ -22,6 +22,7 @@ import {
   Avatar,
   AvatarFallback,
 } from "@/components/work/ui/avatar";
+import { ThemeToggle } from "@/components/work/theme/theme-toggle";
 import { WorkSidebar } from "./work-sidebar";
 
 function initials(name: string) {
@@ -63,6 +64,7 @@ export function WorkTopbar({
       <h1 className="text-sm font-medium">{title}</h1>
 
       <div className="ml-auto flex items-center gap-2">
+        <ThemeToggle />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button

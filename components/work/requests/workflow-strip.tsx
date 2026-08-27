@@ -21,7 +21,7 @@ export function WorkflowStrip({ state }: { state: WorkflowState }) {
                 className={cn(
                   "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 whitespace-nowrap",
                   current && "border-primary/40 bg-primary/10 text-primary",
-                  done && "border-emerald-400/25 bg-emerald-400/10 text-emerald-300",
+                  done && "border-tone-positive/30 bg-tone-positive/10 text-tone-positive",
                   !current && !done && "border-border text-muted-foreground/70",
                 )}
               >
@@ -36,7 +36,7 @@ export function WorkflowStrip({ state }: { state: WorkflowState }) {
         })}
       </ol>
       {inAdjustments ? (
-        <p className="mt-2 text-xs text-amber-300">
+        <p className="mt-2 text-xs text-tone-warn">
           En ajustes — la pieza volvió al equipo tras una ronda de cambios.
         </p>
       ) : null}

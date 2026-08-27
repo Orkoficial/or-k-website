@@ -1,16 +1,8 @@
 import { cn } from "@/lib/work/utils";
 import { WORKFLOW } from "@/lib/work/workflow";
-import { PRIORITY_META, daysUntil } from "@/lib/work/format";
+import { daysUntil } from "@/lib/work/format";
+import { TONE_CLASS, type Tone } from "@/lib/work/tone";
 import type { Priority, WorkflowState } from "@/types/work/domain";
-
-const TONE: Record<string, string> = {
-  neutral: "border-border text-muted-foreground",
-  info: "border-sky-400/25 bg-sky-400/10 text-sky-300",
-  progress: "border-violet-400/25 bg-violet-400/10 text-violet-300",
-  warn: "border-amber-400/25 bg-amber-400/10 text-amber-300",
-  positive: "border-emerald-400/25 bg-emerald-400/10 text-emerald-300",
-  muted: "border-border/60 text-muted-foreground/70",
-};
 
 export function StatusBadge({
   state,
@@ -24,7 +16,7 @@ export function StatusBadge({
     <span
       className={cn(
         "inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[11px] font-medium whitespace-nowrap",
-        TONE[meta.tone],
+        TONE_CLASS[meta.tone as Tone],
         className,
       )}
     >
@@ -34,6 +26,13 @@ export function StatusBadge({
   );
 }
 
+const PRIORITY_TONE: Record<Priority, { label: string; tone: Tone }> = {
+  low: { label: "Baja", tone: "neutral" },
+  medium: { label: "Media", tone: "info" },
+  high: { label: "Alta", tone: "warn" },
+  urgent: { label: "Urgente", tone: "primary" },
+};
+
 export function PriorityBadge({
   priority,
   className,
@@ -41,12 +40,12 @@ export function PriorityBadge({
   priority: Priority;
   className?: string;
 }) {
-  const meta = PRIORITY_META[priority];
+  const meta = PRIORITY_TONE[priority];
   return (
     <span
       className={cn(
         "inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-medium",
-        meta.className,
+        TONE_CLASS[meta.tone],
         className,
       )}
     >
@@ -71,11 +70,11 @@ export function DeadlinePill({
         : d === 1
           ? "Mañana"
           : `${d} días`;
-  const tone =
+  const tone: string =
     d < 0
-      ? "border-destructive/30 bg-destructive/10 text-destructive-foreground"
+      ? "border-destructive/30 bg-destructive/10 text-destructive"
       : d <= 2
-        ? "border-amber-400/25 bg-amber-400/10 text-amber-300"
+        ? TONE_CLASS.warn
         : "border-border text-muted-foreground";
   return (
     <span

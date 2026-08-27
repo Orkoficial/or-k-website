@@ -9,11 +9,11 @@ import { CalendarDays } from "lucide-react";
 export const metadata: Metadata = { title: "Calendar · OR-K WORK" };
 
 const KIND: Record<string, { label: string; className: string }> = {
-  deadline: { label: "Deadline", className: "bg-amber-400/10 text-amber-300 border-amber-400/25" },
-  delivery: { label: "Entrega", className: "bg-sky-400/10 text-sky-300 border-sky-400/25" },
-  publish: { label: "Publicación", className: "bg-emerald-400/10 text-emerald-300 border-emerald-400/25" },
-  meeting: { label: "Reunión", className: "bg-violet-400/10 text-violet-300 border-violet-400/25" },
-  campaign: { label: "Campaña", className: "bg-primary/10 text-primary border-primary/25" },
+  deadline: { label: "Deadline", className: "bg-tone-warn/10 text-tone-warn border-tone-warn/30" },
+  delivery: { label: "Entrega", className: "bg-tone-info/10 text-tone-info border-tone-info/30" },
+  publish: { label: "Publicación", className: "bg-tone-positive/10 text-tone-positive border-tone-positive/30" },
+  meeting: { label: "Reunión", className: "bg-tone-progress/10 text-tone-progress border-tone-progress/30" },
+  campaign: { label: "Campaña", className: "bg-primary/10 text-primary border-primary/30" },
 };
 
 export default async function CalendarPage() {

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ThemeProvider } from "@/components/work/theme/theme-provider";
+import { THEME_BOOTSTRAP } from "@/components/work/theme/theme";
 import "./work.css";
 
 const geistSans = Geist({
@@ -25,6 +27,9 @@ export const metadata: Metadata = {
  * which re-establishes a clean baseline over the public site's global reset
  * (app/globals.css). `work.css` is imported here only, so Next scopes it to
  * `/work/*` — the marketing site never loads it.
+ *
+ * The inline bootstrap script sets the light/dark class on the wrapper before
+ * first paint (no flash); ThemeProvider keeps it in sync afterwards.
  */
 export default function WorkLayout({
   children,
@@ -32,9 +37,11 @@ export default function WorkLayout({
   return (
     <div
       data-orkwork=""
-      className={`dark ${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
+      suppressHydrationWarning
+      className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
     >
-      {children}
+      <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />
+      <ThemeProvider>{children}</ThemeProvider>
     </div>
   );
 }

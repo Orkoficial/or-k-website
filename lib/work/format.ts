@@ -45,23 +45,11 @@ export function deadlineTone(iso: string): "overdue" | "soon" | "ok" {
   return "ok";
 }
 
-export const PRIORITY_META: Record<
-  Priority,
-  { label: string; className: string }
-> = {
-  low: { label: "Baja", className: "text-muted-foreground border-border" },
-  medium: {
-    label: "Media",
-    className: "text-sky-300/90 border-sky-400/25 bg-sky-400/10",
-  },
-  high: {
-    label: "Alta",
-    className: "text-amber-300/90 border-amber-400/25 bg-amber-400/10",
-  },
-  urgent: {
-    label: "Urgente",
-    className: "text-primary border-primary/30 bg-primary/10",
-  },
+export const PRIORITY_LABEL: Record<Priority, string> = {
+  low: "Baja",
+  medium: "Media",
+  high: "Alta",
+  urgent: "Urgente",
 };
 
 export function initials(name: string) {

@@ -8,13 +8,13 @@ import {
   TriangleAlertIcon,
 } from "lucide-react";
 import { Toaster as Sonner, type ToasterProps } from "sonner";
+import { useTheme } from "@/components/work/theme/theme-provider";
 
-// OR-K WORK runs dark-only, so the theme is fixed rather than pulled from
-// next-themes.
 const Toaster = ({ ...props }: ToasterProps) => {
+  const { resolved } = useTheme();
   return (
     <Sonner
-      theme="dark"
+      theme={resolved}
       className="toaster group"
       icons={{
         success: <CircleCheckIcon className="size-4" />,

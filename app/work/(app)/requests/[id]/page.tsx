@@ -271,7 +271,7 @@ export default async function RequestDetailPage({
             </div>
             <Progress value={roundsPct} />
             {request.roundsUsed >= request.roundsIncluded && request.roundsIncluded > 0 ? (
-              <p className="text-xs text-amber-300">
+              <p className="text-xs text-tone-warn">
                 Se alcanzó el límite de rondas incluidas. La ejecutiva puede
                 autorizar una ronda adicional como costo extra.
               </p>
@@ -294,8 +294,8 @@ export default async function RequestDetailPage({
                       <span
                         className={`mt-1 size-1.5 shrink-0 rounded-full ${
                           ap.decision === "approved"
-                            ? "bg-emerald-400"
-                            : "bg-amber-400"
+                            ? "bg-tone-positive"
+                            : "bg-tone-warn"
                         }`}
                       />
                       <span className="text-muted-foreground">

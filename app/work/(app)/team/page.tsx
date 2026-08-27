@@ -7,8 +7,8 @@ import { Card } from "@/components/work/ui/card";
 export const metadata: Metadata = { title: "Team · OR-K WORK" };
 
 const LOAD: Record<string, { label: string; className: string }> = {
-  low: { label: "Ligera", className: "bg-emerald-400/10 text-emerald-300" },
-  medium: { label: "Media", className: "bg-amber-400/10 text-amber-300" },
+  low: { label: "Ligera", className: "bg-tone-positive/10 text-tone-positive" },
+  medium: { label: "Media", className: "bg-tone-warn/10 text-tone-warn" },
   high: { label: "Alta", className: "bg-primary/10 text-primary" },
 };
 

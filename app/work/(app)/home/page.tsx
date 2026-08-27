@@ -94,7 +94,7 @@ export default async function HomePage() {
       {dash.completedThisWeek.length ? (
         <Card className="mt-4 gap-0 overflow-hidden py-0">
           <CardHeader className="flex flex-row items-center gap-2 border-b border-border py-3">
-            <CheckCircle2 className="size-4 text-emerald-400" />
+            <CheckCircle2 className="size-4 text-tone-positive" />
             <CardTitle className="text-sm">Completado esta semana</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
