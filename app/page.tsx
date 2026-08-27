@@ -530,13 +530,17 @@ export default function Home() {
     <section className="work" id="trabajo">
       <header><span className="sectionNo">03 / Trabajo seleccionado</span><h2>Ideas en<br/><i>acción.</i></h2></header>
       <div className="projectControls" aria-label="Navegar proyectos"><button type="button" onClick={()=>moveProjects(-1)} aria-label="Proyecto anterior">←</button><button type="button" onClick={()=>moveProjects(1)} aria-label="Proyecto siguiente">→</button></div>
-      <div className="projects" ref={projectRail} onPointerDown={startProjectDrag} onPointerMove={moveProjectDrag} onPointerUp={stopProjectDrag} onPointerCancel={stopProjectDrag} onPointerLeave={(e)=>projectDrag.current.active&&stopProjectDrag(e)}>
-        {projects.map((project, index)=><article className={`project p${index+1}`} key={project.title}>
-          <a className="projectTarget" href={project.url} target="_blank" rel="noreferrer" draggable="false" aria-label={`Visitar sitio web de ${project.title}`} onDragStart={(event)=>event.preventDefault()} onClick={(event)=>{if(event.detail>0) event.preventDefault();}}>
-            {project.motion?<ProjectMotion poster={project.media} title={project.title} clips={project.motion}/>:<div className="visual projectImage"><img src={project.media} alt={`Proyecto ${project.title}`} draggable="false" loading="lazy" decoding="async"/></div>}
-            <div className="caption"><h3>{project.title}</h3><p>{project.meta}</p><span>{project.year} ↗</span></div>
-          </a>
-        </article>)}
+      <div className="projectsFrame">
+        <button className="projectNav prev" type="button" tabIndex={-1} onClick={()=>moveProjects(-1)} aria-label="Proyecto anterior">←</button>
+        <button className="projectNav next" type="button" tabIndex={-1} onClick={()=>moveProjects(1)} aria-label="Proyecto siguiente">→</button>
+        <div className="projects" ref={projectRail} tabIndex={0} role="region" aria-label="Carrusel de proyectos, usa las flechas del teclado para navegar" onKeyDown={(event)=>{if(event.key==="ArrowRight"){event.preventDefault();moveProjects(1);}else if(event.key==="ArrowLeft"){event.preventDefault();moveProjects(-1);}}} onPointerDown={startProjectDrag} onPointerMove={moveProjectDrag} onPointerUp={stopProjectDrag} onPointerCancel={stopProjectDrag} onPointerLeave={(e)=>projectDrag.current.active&&stopProjectDrag(e)}>
+          {projects.map((project, index)=><article className={`project p${index+1}`} key={project.title}>
+            <a className="projectTarget" href={project.url} target="_blank" rel="noreferrer" draggable="false" aria-label={`Visitar sitio web de ${project.title}`} onDragStart={(event)=>event.preventDefault()} onClick={(event)=>{if(event.detail>0) event.preventDefault();}}>
+              {project.motion?<ProjectMotion poster={project.media} title={project.title} clips={project.motion}/>:<div className="visual projectImage"><img src={project.media} alt={`Proyecto ${project.title}`} draggable="false" loading="lazy" decoding="async"/></div>}
+              <div className="caption"><h3>{project.title}</h3><p>{project.meta}</p><span>{project.year} ↗</span></div>
+            </a>
+          </article>)}
+        </div>
       </div>
       <div className="caseMethod"><p>Un caso no termina en una imagen bonita.</p><div><span>01</span><b>Contexto</b><p>Entendemos el negocio, la audiencia y la oportunidad.</p></div><div><span>02</span><b>Idea</b><p>Construimos un concepto capaz de vivir en cualquier formato.</p></div><div><span>03</span><b>Sistema</b><p>Lo convertimos en identidad, contenido y experiencia digital.</p></div></div>
     </section>
