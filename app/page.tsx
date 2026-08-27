@@ -91,7 +91,7 @@ const teamMembers = [
   {name:"Nombre Apellido",role:"Directora de Estrategia",photo:"/assets/team-02.png",bio:"Breve descripción pendiente."},
   {name:"Nombre Apellido",role:"Director Creativo",photo:"/assets/team-03.png",bio:"Breve descripción pendiente."},
   {name:"Nombre Apellido",role:"Director de Tecnología",photo:"/assets/team-04.png",bio:"Breve descripción pendiente."},
-  {name:"Nombre Apellido",role:"Dirección de Arte",photo:"/assets/team-05.jpg",bio:"Breve descripción pendiente."},
+  {name:"Brandon Bustos",role:"Creative Technologist & Software Engineer",photo:"/assets/team-05.jpg",bio:"Diseñador Gráfico Publicitario e Ingeniero de Software con más de 10 años de experiencia en medios digitales, creatividad y tecnología.\n\nSu trayectoria integra dirección creativa, branding, estrategia digital, desarrollo web, aplicaciones móviles, UI/UX, automatización e inteligencia artificial, liderando proyectos desde la conceptualización hasta su implementación.\n\nHa trabajado con marcas como Claro, Cencosud, Croydon y Fuller Pinto, participando en proyectos de comunicación, transformación digital y construcción de experiencias de marca.\n\nSu enfoque conecta creatividad, negocio y tecnología para desarrollar ideas que no solo generan impacto visual, sino que se convierten en productos, plataformas y experiencias con valor real."},
 ];
 
 function ProjectMotion({poster,title,clips}:{poster:string;title:string;clips:{src:string;duration:number;kind?:"image"|"video";startAt?:number}[]}){

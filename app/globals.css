@@ -311,7 +311,7 @@ html,body{max-width:100%;overflow-x:hidden}.hero{--hero-x:0;--hero-y:0}
 .teamCard:hover .teamPhoto img,.teamCard:focus-within .teamPhoto img{filter:grayscale(0) contrast(1);transform:scale(1.04)}
 .teamCard h3{margin:0 0 6px;font:400 clamp(20px,1.7vw,28px)/1 "Anton",Impact,sans-serif;text-transform:uppercase}
 .teamCard span{font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--ork-pink)}
-.teamCard p{margin:12px 0 0;font-size:11px;line-height:1.55;color:rgba(255,255,255,.62)}
+.teamCard p{margin:12px 0 0;font-size:11px;line-height:1.55;color:rgba(255,255,255,.62);white-space:pre-line}
 @media(max-width:1100px){.teamGrid{grid-template-columns:repeat(3,1fr);gap:3vw}}
 @media(max-width:900px){.teamGrid{grid-template-columns:repeat(2,1fr);gap:5vw}}
 @media(max-width:560px){.teamGrid{grid-template-columns:1fr}.teamHeader>span{display:none}.teamBody{padding:6vh 6vw 12vh}}
