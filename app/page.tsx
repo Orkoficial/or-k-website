@@ -401,7 +401,7 @@ export default function Home() {
     ];
   };
   return <main className={`editorialIdentity${filmMode ? " isFilmMode" : ""}`}>
-    {showLoader&&<div className="orkLoader" role="status" aria-label="Cargando O R-K"><div className="loaderMark"><img src="/assets/ork-logo-white.png" alt=""/><span>Business innovation & technology</span></div><div className="loaderTrack"><i/></div><p>Ideas tomando forma</p></div>}
+    {showLoader&&<div className="orkLoader" role="status" aria-label="Cargando O R-K"><div className="loaderMark"><img src="/assets/ork-logo-white.png" alt=""/></div><div className="loaderTrack"><i/></div><p>Ideas tomando forma</p></div>}
     <div className="cursor" style={{ transform: `translate(${cursor.x}px,${cursor.y}px)` }} />
     <div className="scrollProgress" style={{transform:`scaleX(${scrollProgress})`}} aria-hidden="true" />
     <div className="siteGrain" aria-hidden="true" />
