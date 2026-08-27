@@ -1,0 +1,182 @@
+/* ============================================================================
+   OR-K WORK — isolated stylesheet for the internal agency workspace.
+   Imported ONLY by app/work/layout.tsx, so Next.js scopes it to /work/* routes.
+   The public marketing site (app/globals.css) is never touched by this file.
+   ========================================================================== */
+
+/* Layer order (later = higher priority). `marketing` holds the public site's
+   globals.css (see app/styles/marketing.css) and must sit below Tailwind so the
+   WORK module's utilities win on /work routes. */
+@layer marketing, theme, base, components, utilities;
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Only scan the WORK module for utility classes. */
+@source "../../components/work";
+@source "../../hooks/work";
+@source "./";
+
+:root {
+  --radius: 0.5rem;
+
+  /* Light values kept only as a fallback; the WORK app runs dark-only. */
+  --background: oklch(0.98 0.003 90);
+  --foreground: oklch(0.18 0.01 300);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.01 300);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.01 300);
+  --primary: oklch(0.585 0.233 5.4);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.96 0.004 90);
+  --secondary-foreground: oklch(0.22 0.01 300);
+  --muted: oklch(0.96 0.004 90);
+  --muted-foreground: oklch(0.5 0.01 300);
+  --accent: oklch(0.95 0.005 340);
+  --accent-foreground: oklch(0.22 0.01 300);
+  --destructive: oklch(0.62 0.22 25);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.9 0.004 90);
+  --input: oklch(0.9 0.004 90);
+  --ring: oklch(0.585 0.233 5.4);
+
+  --chart-1: oklch(0.585 0.233 5.4);
+  --chart-2: oklch(0.6 0.13 250);
+  --chart-3: oklch(0.7 0.15 160);
+  --chart-4: oklch(0.75 0.16 70);
+  --chart-5: oklch(0.65 0.19 300);
+
+  --sidebar: oklch(0.99 0.003 90);
+  --sidebar-foreground: oklch(0.18 0.01 300);
+  --sidebar-primary: oklch(0.585 0.233 5.4);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.95 0.005 340);
+  --sidebar-accent-foreground: oklch(0.22 0.01 300);
+  --sidebar-border: oklch(0.9 0.004 90);
+  --sidebar-ring: oklch(0.585 0.233 5.4);
+}
+
+.dark {
+  /* OR-K ink + pink, tuned for a Linear-style operations UI. */
+  --background: oklch(0.155 0.012 305);
+  --foreground: oklch(0.94 0.006 90);
+  --card: oklch(0.19 0.012 305);
+  --card-foreground: oklch(0.94 0.006 90);
+  --popover: oklch(0.175 0.012 305);
+  --popover-foreground: oklch(0.94 0.006 90);
+  --primary: oklch(0.62 0.235 5.4);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.24 0.012 305);
+  --secondary-foreground: oklch(0.94 0.006 90);
+  --muted: oklch(0.24 0.012 305);
+  --muted-foreground: oklch(0.66 0.014 305);
+  --accent: oklch(0.27 0.02 340);
+  --accent-foreground: oklch(0.96 0.006 90);
+  --destructive: oklch(0.64 0.21 22);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 13%);
+  --ring: oklch(0.62 0.235 5.4);
+
+  --chart-1: oklch(0.62 0.235 5.4);
+  --chart-2: oklch(0.66 0.14 250);
+  --chart-3: oklch(0.72 0.15 160);
+  --chart-4: oklch(0.78 0.16 70);
+  --chart-5: oklch(0.68 0.19 300);
+
+  --sidebar: oklch(0.17 0.012 305);
+  --sidebar-foreground: oklch(0.9 0.006 90);
+  --sidebar-primary: oklch(0.62 0.235 5.4);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.25 0.014 305);
+  --sidebar-accent-foreground: oklch(0.94 0.006 90);
+  --sidebar-border: oklch(1 0 0 / 8%);
+  --sidebar-ring: oklch(0.62 0.235 5.4);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-sans: "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", "Geist Mono Fallback", ui-monospace, monospace;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  /* Isolation wrapper — neutralises the public site's global reset
+     (app/globals.css sets body{cursor:none;background:var(--ink);...}). */
+  [data-orkwork] {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    cursor: auto;
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* The marketing globals.css is loaded on every route (root layout) and styles
+     the bare `nav` and `footer` elements (position:absolute, fixed height, etc).
+     Neutralise those rules inside the WORK module so Tailwind utilities win. */
+  [data-orkwork] :where(nav, footer) {
+    position: static;
+    inset: auto;
+    width: auto;
+    height: auto;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    z-index: auto;
+    border: 0;
+    background: transparent;
+    display: revert;
+    align-items: normal;
+    justify-content: normal;
+    flex-direction: row;
+    gap: normal;
+  }
+}

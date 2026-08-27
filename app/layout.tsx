@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "./styles/marketing.css";
 
 export const metadata: Metadata = {
   title: "O R-K — Business Innovation & Technology",
