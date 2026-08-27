@@ -291,9 +291,16 @@ html,body{max-width:100%;overflow-x:hidden}.hero{--hero-x:0;--hero-y:0}
 .manifestoAside>b{display:block;margin:18px 0 42px;color:var(--ork-pink);font:400 34px/1 "DM Sans",sans-serif}
 .manifestoAside p{font-size:10px;line-height:1.5;letter-spacing:.08em;text-transform:none;max-width:220px}
 .manifestoAside small{display:block;margin-top:30px;font-size:8px;line-height:1.55;letter-spacing:.14em;color:var(--ork-pink)}
-.teamLaunch{display:inline-flex;align-items:center;gap:14px;margin-top:26px;padding:11px 0 10px;border:0;border-bottom:1px solid var(--ork-pink);background:transparent;color:var(--ork-ink);text-transform:uppercase;font-size:9px;font-weight:600;letter-spacing:.16em;cursor:pointer;transition:gap .25s}
-.teamLaunch span{color:var(--ork-pink);font-size:13px}
-.teamLaunch:hover,.teamLaunch:focus-visible{gap:22px}
+.teamLaunch{position:relative;display:inline-flex;align-items:center;gap:16px;margin-top:26px;padding:12px 10px 14px 2px;border:0;background:transparent;color:var(--ork-ink);text-transform:uppercase;font-size:10px;font-weight:600;letter-spacing:.16em;cursor:pointer;overflow:hidden;transition:gap .25s,color .25s}
+.teamLaunch>span{position:relative;z-index:1;display:grid;place-items:center;width:26px;height:26px;background:var(--ork-pink);color:#fff;font-size:13px;animation:teamLaunchArrow 2.4s cubic-bezier(.16,.8,.2,1) infinite}
+.teamLaunch::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:rgba(227,21,114,.25)}
+.teamLaunch::before{content:"";position:absolute;bottom:0;left:0;width:42%;height:2px;background:var(--ork-pink);box-shadow:0 0 10px 1px rgba(227,21,114,.7);animation:teamLaunchSweep 2.4s cubic-bezier(.55,0,.1,1) infinite}
+.teamLaunch:hover,.teamLaunch:focus-visible{gap:24px;color:var(--ork-pink)}
+.teamLaunch:hover::before,.teamLaunch:focus-visible::before{animation-duration:1s}
+.teamLaunch:hover>span,.teamLaunch:focus-visible>span{animation:none;transform:translate(4px,-4px) scale(1.1);transition:transform .3s cubic-bezier(.16,.8,.2,1)}
+@keyframes teamLaunchSweep{0%{transform:translateX(-110%)}55%{transform:translateX(250%)}100%{transform:translateX(-110%)}}
+@keyframes teamLaunchArrow{0%,58%,100%{transform:translate(0,0) scale(1)}70%{transform:translate(5px,-5px) scale(1.14)}82%{transform:translate(0,0) scale(1)}}
+@media(prefers-reduced-motion:reduce){.teamLaunch::before{animation:none;width:100%;box-shadow:none}.teamLaunch>span{animation:none}}
 .teamOverlay{position:fixed;z-index:500;inset:0;background:var(--ork-ink);color:var(--ork-paper-light);overflow-y:auto;animation:howOpen .55s cubic-bezier(.16,.8,.2,1) both}
 .teamHeader{position:sticky;z-index:4;top:0;height:72px;padding:0 3vw;display:flex;align-items:center;border-bottom:1px solid rgba(255,255,255,.2);background:rgba(17,16,15,.9);backdrop-filter:blur(10px)}
 .teamHeader img{width:105px;height:42px;object-fit:contain}
