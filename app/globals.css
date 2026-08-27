@@ -468,15 +468,16 @@ html,body{max-width:100%;overflow-x:hidden}.hero{--hero-x:0;--hero-y:0}
 /* Direct navigation replaces the exploratory map. */
 .editorialIdentity>nav .navlinks{display:flex;margin-left:auto;align-items:center;gap:30px}
 .editorialIdentity>nav .navlinks a:last-child{color:var(--ork-pink);border-left:1px solid var(--ork-pink);padding-left:24px}
-.editorialIdentity>nav .navHow{position:relative;isolation:isolate;overflow:hidden;margin-left:clamp(28px,6vw,92px);display:flex;align-items:center;gap:16px;padding:10px 12px 10px 15px;border:1px solid var(--ork-ink);background:transparent;color:inherit;font:600 9px/1 sans-serif;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:background .25s,color .25s,border-color .25s,transform .25s;animation:navMethodColor 5.4s ease-in-out infinite}
-.editorialIdentity>nav .navHow:after{content:"";position:absolute;z-index:-1;inset:0;background:var(--ork-pink);transform:scaleX(0);transform-origin:left;animation:navMethodSweep 5.4s cubic-bezier(.16,.8,.2,1) infinite}
-.editorialIdentity>nav .navHow b{display:grid;place-items:center;width:25px;height:25px;background:var(--ork-pink);color:var(--ork-paper-light);font-size:13px;transition:transform .3s;animation:navMethodArrow 5.4s ease-in-out infinite}
-.editorialIdentity>nav .navHow:hover,.editorialIdentity>nav .navHow:focus-visible{background:var(--ork-ink);color:var(--ork-paper-light)!important;border-color:var(--ork-ink)!important;transform:translateY(-2px);animation-play-state:paused}
-.editorialIdentity>nav .navHow:hover:after,.editorialIdentity>nav .navHow:focus-visible:after{opacity:0;animation-play-state:paused}
-.editorialIdentity>nav .navHow:hover b,.editorialIdentity>nav .navHow:focus-visible b{background:var(--ork-pink);color:var(--ork-paper-light);transform:rotate(45deg);animation-play-state:paused}
-@keyframes navMethodSweep{0%,58%,100%{transform:scaleX(0);transform-origin:left}68%,86%{transform:scaleX(1);transform-origin:left}87%{transform:scaleX(1);transform-origin:right}}
-@keyframes navMethodColor{0%,58%,100%{color:var(--ork-ink);border-color:var(--ork-ink)}68%,86%{color:var(--ork-paper-light);border-color:var(--ork-pink)}}
-@keyframes navMethodArrow{0%,58%,100%{background:var(--ork-pink);color:var(--ork-paper-light);transform:rotate(0)}68%,86%{background:var(--ork-ink);color:var(--ork-paper-light);transform:rotate(45deg)}}
+.editorialIdentity>nav .navHow{position:relative;isolation:isolate;margin-left:clamp(20px,5vw,64px);display:flex;align-items:center;gap:12px;padding:13px 15px 13px 19px;border:0;background:var(--ork-pink);color:#fff;font:700 10px/1 sans-serif;letter-spacing:.17em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 0 0 rgba(227,21,114,.55);transition:transform .3s cubic-bezier(.16,.8,.2,1),box-shadow .3s;animation:navHowPulse 2.4s ease-out infinite}
+.editorialIdentity>nav .navHow::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.55) 50%,transparent 60%);background-size:260% 100%;background-position:210% 0;animation:navHowShine 2.4s ease-in-out infinite}
+.editorialIdentity>nav .navHow>*{position:relative;z-index:2}
+.editorialIdentity>nav .navHow b{display:grid;place-items:center;width:24px;height:24px;background:#fff;color:var(--ork-pink);font-size:13px;animation:navHowArrow 2.4s cubic-bezier(.16,.8,.2,1) infinite}
+.editorialIdentity>nav .navHow:hover,.editorialIdentity>nav .navHow:focus-visible{transform:scale(1.06);box-shadow:0 12px 30px rgba(227,21,114,.5);animation-play-state:paused}
+.editorialIdentity>nav .navHow:hover::before,.editorialIdentity>nav .navHow:focus-visible::before{animation-duration:1s}
+.editorialIdentity>nav .navHow:hover b,.editorialIdentity>nav .navHow:focus-visible b{animation:none;transform:rotate(45deg) scale(1.12);transition:transform .3s cubic-bezier(.16,.8,.2,1)}
+@keyframes navHowPulse{0%{box-shadow:0 0 0 0 rgba(227,21,114,.55)}70%{box-shadow:0 0 0 15px rgba(227,21,114,0)}100%{box-shadow:0 0 0 0 rgba(227,21,114,0)}}
+@keyframes navHowShine{0%{background-position:210% 0}45%,100%{background-position:-130% 0}}
+@keyframes navHowArrow{0%,62%,100%{transform:translate(0,0) scale(1)}74%{transform:translate(3px,-3px) scale(1.16)}86%{transform:translate(0,0) scale(1)}}
 
 /* UTS: the agency method and its three facets */
 .editorialIdentity .utsHeading{--uts-x:50%;--uts-y:50%;--uts-rx:0deg;--uts-ry:0deg;position:relative;isolation:isolate;perspective:1100px;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,.72fr);align-items:end;gap:clamp(12px,1.5vw,28px);margin:8vw 0 5vw!important;font-size:clamp(50px,6.3vw,106px)!important;line-height:.78!important;letter-spacing:-.025em!important;transform:rotateX(var(--uts-rx)) rotateY(var(--uts-ry));transition:transform .18s ease-out}
@@ -569,7 +570,7 @@ html,body{max-width:100%;overflow-x:hidden}.hero{--hero-x:0;--hero-y:0}
   .howIntroPanel .utsCoverTitle{display:block;margin:4vh 0 2vh;font-size:24vw;white-space:normal}.howIntroPanel .utsCoverTitle i{display:block}.utsCoverSequence{gap:8px;flex-wrap:wrap;font-size:6vw}.utsCoverSequence b{font-size:5vw}
 }
 @media(prefers-reduced-motion:reduce){.editorialIdentity .utsHeading{transform:none!important;transition:none!important}.utsCursorAura,.editorialIdentity .utsHeading:after{display:none!important}.editorialIdentity .utsHeading .utsStage,.editorialIdentity .utsHeading>b{transition:none!important}.editorialIdentity .utsHeading .utsStageScale:hover:before{animation:none!important}}
-@media(prefers-reduced-motion:reduce){.editorialIdentity>nav .navHow,.editorialIdentity>nav .navHow:after,.editorialIdentity>nav .navHow b{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.editorialIdentity>nav .navHow,.editorialIdentity>nav .navHow::before,.editorialIdentity>nav .navHow b{animation:none!important}.editorialIdentity>nav .navHow::before{display:none}}
 
 /* Navigation map follows the printed language */
 .editorialIdentity .navMap{background:radial-gradient(circle 330px at var(--map-x) var(--map-y),rgba(227,21,114,.25),transparent 70%),var(--ork-ink)}
