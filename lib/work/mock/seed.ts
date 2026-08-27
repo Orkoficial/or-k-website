@@ -418,6 +418,13 @@ export function buildCalendar(requests: Request[]): CalendarEvent[] {
     { id: "ev-kliniu-launch", date: inDays(6), kind: "campaign", title: "Lanzamiento dispensadores Kliniu", clientId: "c-kliniu" },
     { id: "ev-lorigine-review", date: inDays(3), kind: "meeting", title: "Revisión identidad · L'Origine", clientId: "c-lorigine" },
     { id: "ev-totalpars-go", date: inDays(14), kind: "delivery", title: "Entrega marketplace · Totalpars", clientId: "c-totalpars" },
+    { id: "ev-weekly", date: inDays(1), kind: "meeting", title: "Weekly de agencia", clientId: "c-marwa" },
+    { id: "ev-marwa-shoot", date: ago(6), kind: "delivery", title: "Sesión de fotos FW26", clientId: "c-marwa" },
+    { id: "ev-kliniu-kickoff", date: ago(12), kind: "meeting", title: "Kickoff campaña Kliniu", clientId: "c-kliniu" },
+    { id: "ev-geu-checkin", date: inDays(11), kind: "meeting", title: "Check-in rebrand · GEU", clientId: "c-geu" },
+    { id: "ev-totalpars-content", date: inDays(18), kind: "delivery", title: "Batch de contenido · Totalpars", clientId: "c-totalpars" },
+    { id: "ev-lorigine-pack", date: inDays(22), kind: "delivery", title: "Entrega packaging · L'Origine", clientId: "c-lorigine" },
+    { id: "ev-kliniu-report", date: inDays(25), kind: "meeting", title: "Reporte de resultados · Kliniu", clientId: "c-kliniu" },
   );
   return events.sort((a, b) => +new Date(a.date) - +new Date(b.date));
 }
