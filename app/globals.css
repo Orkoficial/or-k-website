@@ -473,12 +473,13 @@ html,body{max-width:100%;overflow-x:hidden}.hero{--hero-x:0;--hero-y:0}
 /* Direct navigation replaces the exploratory map. */
 .editorialIdentity>nav .navlinks{display:flex;margin-left:auto;align-items:center;gap:30px}
 .editorialIdentity>nav .navlinks a:last-child{color:var(--ork-pink);border-left:1px solid var(--ork-pink);padding-left:24px}
-.editorialIdentity>nav .navHow{position:relative;margin-left:clamp(20px,5vw,64px);display:flex;align-items:center;gap:12px;padding:12px 14px 12px 18px;border:0;background:var(--ork-pink);color:#fff;font:700 10px/1 sans-serif;letter-spacing:.17em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 0 0 rgba(227,21,114,.4);transition:transform .3s cubic-bezier(.16,.8,.2,1),box-shadow .35s,background-color .25s;animation:navHowPulse 3s ease-out infinite}
+.editorialIdentity>nav .navHow{position:relative;margin-left:clamp(20px,5vw,64px);display:flex;align-items:center;gap:12px;padding:12px 14px 12px 18px;border:0;background:var(--ork-pink);color:#fff;font:700 10px/1 sans-serif;letter-spacing:.17em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 0 0 rgba(17,16,15,.28);transition:transform .3s cubic-bezier(.16,.8,.2,1),box-shadow .35s,filter .25s;animation:navHowPulse 3s ease-out infinite,navHowColor 20s ease-in-out infinite}
 .editorialIdentity>nav .navHow b{display:grid;place-items:center;width:23px;height:23px;background:#fff;color:var(--ork-pink);font-size:13px;transition:transform .3s cubic-bezier(.16,.8,.2,1);animation:navHowArrow 3s cubic-bezier(.16,.8,.2,1) infinite}
-.editorialIdentity>nav .navHow:hover,.editorialIdentity>nav .navHow:focus-visible{transform:translateY(-1px);background:#c50f61;box-shadow:0 10px 26px rgba(227,21,114,.4);animation-play-state:paused}
+.editorialIdentity>nav .navHow:hover,.editorialIdentity>nav .navHow:focus-visible{transform:translateY(-1px);filter:brightness(.9);box-shadow:0 10px 26px rgba(0,0,0,.22);animation-play-state:paused}
 .editorialIdentity>nav .navHow:hover b,.editorialIdentity>nav .navHow:focus-visible b{animation:none;transform:translate(3px,-3px)}
-@keyframes navHowPulse{0%{box-shadow:0 0 0 0 rgba(227,21,114,.38)}70%{box-shadow:0 0 0 11px rgba(227,21,114,0)}100%{box-shadow:0 0 0 0 rgba(227,21,114,0)}}
+@keyframes navHowPulse{0%{box-shadow:0 0 0 0 rgba(17,16,15,.26)}70%{box-shadow:0 0 0 11px rgba(17,16,15,0)}100%{box-shadow:0 0 0 0 rgba(17,16,15,0)}}
 @keyframes navHowArrow{0%,66%,100%{transform:translate(0,0)}78%{transform:translate(3px,-3px)}88%{transform:translate(0,0)}}
+@keyframes navHowColor{0%,18%{background-color:#e31572}25%,43%{background-color:#6f35b5}50%,68%{background-color:#32125e}75%,93%{background-color:#141018}100%{background-color:#e31572}}
 
 /* UTS: the agency method and its three facets */
 .editorialIdentity .utsHeading{--uts-x:50%;--uts-y:50%;--uts-rx:0deg;--uts-ry:0deg;position:relative;isolation:isolate;perspective:1100px;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,.72fr);align-items:end;gap:clamp(12px,1.5vw,28px);margin:8vw 0 5vw!important;font-size:clamp(50px,6.3vw,106px)!important;line-height:.78!important;letter-spacing:-.025em!important;transform:rotateX(var(--uts-rx)) rotateY(var(--uts-ry));transition:transform .18s ease-out}
