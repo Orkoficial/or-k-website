@@ -1,0 +1,75 @@
+import type { Priority } from "@/types/work/domain";
+
+const rtf = new Intl.RelativeTimeFormat("es", { numeric: "auto" });
+
+export function relativeTime(iso: string): string {
+  const then = new Date(iso).getTime();
+  const now = Date.now();
+  const diff = then - now;
+  const abs = Math.abs(diff);
+  const min = 60_000;
+  const hour = 60 * min;
+  const day = 24 * hour;
+
+  if (abs < hour) return rtf.format(Math.round(diff / min), "minute");
+  if (abs < day) return rtf.format(Math.round(diff / hour), "hour");
+  if (abs < 30 * day) return rtf.format(Math.round(diff / day), "day");
+  return new Date(iso).toLocaleDateString("es", { day: "numeric", month: "short" });
+}
+
+export function shortDate(iso: string): string {
+  return new Date(iso).toLocaleDateString("es", {
+    day: "numeric",
+    month: "short",
+  });
+}
+
+export function fullDate(iso: string): string {
+  return new Date(iso).toLocaleDateString("es", {
+    weekday: "short",
+    day: "numeric",
+    month: "long",
+  });
+}
+
+export function daysUntil(iso: string): number {
+  const d = new Date(iso);
+  d.setHours(23, 59, 59, 999);
+  return Math.ceil((d.getTime() - Date.now()) / 86_400_000);
+}
+
+export function deadlineTone(iso: string): "overdue" | "soon" | "ok" {
+  const d = daysUntil(iso);
+  if (d < 0) return "overdue";
+  if (d <= 2) return "soon";
+  return "ok";
+}
+
+export const PRIORITY_META: Record<
+  Priority,
+  { label: string; className: string }
+> = {
+  low: { label: "Baja", className: "text-muted-foreground border-border" },
+  medium: {
+    label: "Media",
+    className: "text-sky-300/90 border-sky-400/25 bg-sky-400/10",
+  },
+  high: {
+    label: "Alta",
+    className: "text-amber-300/90 border-amber-400/25 bg-amber-400/10",
+  },
+  urgent: {
+    label: "Urgente",
+    className: "text-primary border-primary/30 bg-primary/10",
+  },
+};
+
+export function initials(name: string) {
+  return name
+    .split(" ")
+    .map((p) => p[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+}

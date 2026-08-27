@@ -1,14 +1,26 @@
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/work/shell/placeholder-page";
+import { getClients, getRequests, getUsers } from "@/lib/work/mock/store";
+import { PageHeader } from "@/components/work/shared/page-header";
+import { KanbanBoard } from "@/components/work/workflow/kanban-board";
 
 export const metadata: Metadata = { title: "Workflow · OR-K WORK" };
 
-export default function Page() {
+export default async function WorkflowPage() {
+  const [requests, clients, users] = await Promise.all([
+    getRequests(),
+    getClients(),
+    getUsers(),
+  ]);
+
+  const board = requests.filter((r) => r.state !== "archived");
+
   return (
-    <PlaceholderPage
-      title="Workflow"
-      description="Vista Kanban del flujo Brief → Copy → Design → Review → Client → Approved."
-      phase="Fase 2"
-    />
+    <div>
+      <PageHeader
+        title="Workflow"
+        description="Arrastra una tarjeta a otra columna para cambiar su estado."
+      />
+      <KanbanBoard requests={board} clients={clients} users={users} />
+    </div>
   );
 }

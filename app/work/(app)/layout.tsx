@@ -4,6 +4,10 @@ import { supabaseConfigured } from "@/lib/work/supabase/env";
 import { WorkShell } from "@/components/work/shell/work-shell";
 import { Toaster } from "@/components/work/ui/sonner";
 
+// The workspace reads a live (mutable, time-relative) data store, so every
+// page renders per request rather than being prerendered at build time.
+export const dynamic = "force-dynamic";
+
 export default async function WorkAppLayout({
   children,
 }: {
