@@ -6,6 +6,13 @@ export type CompanyResearch = {
   summary: string;
   industry: string;
   digitalPresence: string;
+  identityAssessment: string;
+  relatedEntities: string[];
+  companySize: string;
+  financialSignals: string[];
+  estimatedAnnualRevenue: string;
+  estimateBasis: string;
+  tradeSignals: string[];
   opportunities: string[];
   risks: string[];
   recommendations: string[];
@@ -31,7 +38,7 @@ export async function researchCompany(answers:PrequalificationAnswers):Promise<C
       store:false,
       tools:[{type:"web_search",search_context_size:"medium"}],
       include:["web_search_call.action.sources"],
-      input:`Investiga únicamente información pública y verificable sobre esta empresa. Distingue claramente hechos encontrados de inferencias. Confirma la identidad comparando razón social, ubicación, dominio, NIT y LinkedIn. Si no puedes identificarla con seguridad, dilo y evita atribuirle datos de organizaciones homónimas.\n\nNombre comercial: ${answers.company}\nRazón social: ${answers.legalName}\nNIT: ${answers.taxId||"No informado"}\nPaís y ciudad: ${answers.location}\nSitio web declarado: ${answers.website||"No informado"}\nLinkedIn declarado: ${answers.linkedin||"No informado"}\nAños operando: ${answers.years}\nCanales declarados: ${answers.channels.join(", ")}\nHerramientas declaradas: ${answers.tools.join(", ")}\nRetos declarados: ${answers.challenge.join(", ")}\nEscala declarada: ${answers.employees} personas; facturación ${answers.revenue}.\n\nEntrega un análisis ejecutivo breve en español para una consultora de transformación empresarial.`,
+      input:`Investiga únicamente información pública y verificable sobre esta empresa. Distingue claramente hechos encontrados de inferencias. Confirma la identidad comparando razón social, ubicación, dominio, NIT y LinkedIn. Si no puedes identificarla con seguridad, dilo y evita atribuirle datos de organizaciones homónimas. Busca también posibles marcas comerciales, empresas relacionadas, grupo empresarial o propietarios solo cuando existan fuentes públicas. Revisa señales públicas de tamaño empresarial, ingresos, activos, patrimonio, utilidad, contratación, importaciones y exportaciones. Si no existe una cifra pública de ingresos, ofrece únicamente un rango estimado prudente y explica sus supuestos; nunca lo presentes como declaración tributaria ni dato confirmado. Usa "No encontrado en fuentes públicas" cuando corresponda.\n\nNombre comercial: ${answers.company}\nRazón social: ${answers.legalName}\nNIT: ${answers.taxId||"No informado"}\nPaís y ciudad: ${answers.location}\nSitio web declarado: ${answers.website||"No informado"}\nLinkedIn declarado: ${answers.linkedin||"No informado"}\nAños operando: ${answers.years}\nCanales declarados: ${answers.channels.join(", ")}\nHerramientas declaradas: ${answers.tools.join(", ")}\nRetos declarados: ${answers.challenge.join(", ")}\nEscala declarada: ${answers.employees} personas; facturación ${answers.revenue}.\n\nEntrega un análisis ejecutivo breve en español para una consultora de transformación empresarial.`,
       text:{format:{
         type:"json_schema",
         name:"company_research",
@@ -43,11 +50,18 @@ export async function researchCompany(answers:PrequalificationAnswers):Promise<C
             summary:{type:"string"},
             industry:{type:"string"},
             digitalPresence:{type:"string"},
+            identityAssessment:{type:"string"},
+            relatedEntities:{type:"array",items:{type:"string"},maxItems:5},
+            companySize:{type:"string"},
+            financialSignals:{type:"array",items:{type:"string"},maxItems:5},
+            estimatedAnnualRevenue:{type:"string"},
+            estimateBasis:{type:"string"},
+            tradeSignals:{type:"array",items:{type:"string"},maxItems:5},
             opportunities:{type:"array",items:{type:"string"},maxItems:4},
             risks:{type:"array",items:{type:"string"},maxItems:4},
             recommendations:{type:"array",items:{type:"string"},maxItems:4},
           },
-          required:["summary","industry","digitalPresence","opportunities","risks","recommendations"],
+          required:["summary","industry","digitalPresence","identityAssessment","relatedEntities","companySize","financialSignals","estimatedAnnualRevenue","estimateBasis","tradeSignals","opportunities","risks","recommendations"],
         },
       }},
     }),

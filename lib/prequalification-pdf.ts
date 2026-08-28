@@ -66,6 +66,14 @@ export async function createPrequalificationPdf(answers:PrequalificationAnswers,
     label("Resumen ejecutivo");text(research.summary,11);y-=14;
     label("Industria y actividad");text(research.industry,10);y-=14;
     label("Presencia digital observada");text(research.digitalPresence,10);y-=14;
+    addPage();
+    label("Inteligencia empresarial");text("Los rangos estimados no son declaraciones tributarias ni cifras contables confirmadas. Se incluyen para orientación comercial y requieren validación.",9,muted);y-=16;
+    label("Nivel de identificación");text(research.identityAssessment,10);y-=14;
+    label("Marcas, empresas o grupos relacionados");for(const item of (research.relatedEntities.length?research.relatedEntities:["No encontrado en fuentes públicas"]))text(`- ${item}`,9.5,ink,regular,8);y-=12;
+    label("Tamaño empresarial");text(research.companySize,10);y-=14;
+    label("Señales financieras públicas");for(const item of (research.financialSignals.length?research.financialSignals:["No encontrado en fuentes públicas"]))text(`- ${item}`,9.5,ink,regular,8);y-=12;
+    label("Ingresos anuales estimados");text(research.estimatedAnnualRevenue,11,ink,bold);y-=10;text(research.estimateBasis,9,muted);y-=14;
+    label("Comercio exterior");for(const item of (research.tradeSignals.length?research.tradeSignals:["No encontrado en fuentes públicas"]))text(`- ${item}`,9.5,ink,regular,8);y-=16;
     label("Oportunidades detectadas");for(const item of research.opportunities)text(`- ${item}`,9.5,ink,regular,8);y-=12;
     label("Riesgos y puntos por validar");for(const item of research.risks)text(`- ${item}`,9.5,ink,regular,8);y-=12;
     label("Recomendaciones ORCA");for(const item of research.recommendations)text(`- ${item}`,9.5,ink,regular,8);y-=12;
