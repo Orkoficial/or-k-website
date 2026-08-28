@@ -1,12 +1,13 @@
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { PrequalificationAnswers, scorePrequalification } from "@/lib/prequalification";
+import type { CompanyResearch } from "@/lib/company-research";
 
 const ink=rgb(0.07,0.06,0.06);
 const pink=rgb(0.93,0,0.45);
 const muted=rgb(0.42,0.4,0.4);
 const paper=rgb(0.96,0.95,0.92);
 
-export async function createPrequalificationPdf(answers:PrequalificationAnswers) {
+export async function createPrequalificationPdf(answers:PrequalificationAnswers,research:CompanyResearch|null=null) {
   const result=scorePrequalification(answers);
   const pdf=await PDFDocument.create();
   pdf.setTitle(`Preclasificación ORCA - ${answers.company}`);
@@ -59,6 +60,17 @@ export async function createPrequalificationPdf(answers:PrequalificationAnswers)
   label("Escala empresarial");row("Facturación mensual",answers.revenue);row("Personas",answers.employees);row("Costo mensual de personal",answers.payroll);
   label("Madurez y necesidad");row("Herramientas actuales",answers.tools);row("Reto principal",answers.challenge);
   label("Preparación");row("Decisión y urgencia",answers.urgency);row("Participación directiva",answers.leadership);row("Capacidad de inversión",answers.investment);
+  if(research){
+    addPage();
+    label("Investigación pública asistida por IA");text("Este análisis combina fuentes públicas con inferencias de IA. Debe validarse antes de tomar decisiones.",9,muted);y-=16;
+    label("Resumen ejecutivo");text(research.summary,11);y-=14;
+    label("Industria y actividad");text(research.industry,10);y-=14;
+    label("Presencia digital observada");text(research.digitalPresence,10);y-=14;
+    label("Oportunidades detectadas");for(const item of research.opportunities)text(`- ${item}`,9.5,ink,regular,8);y-=12;
+    label("Riesgos y puntos por validar");for(const item of research.risks)text(`- ${item}`,9.5,ink,regular,8);y-=12;
+    label("Recomendaciones ORCA");for(const item of research.recommendations)text(`- ${item}`,9.5,ink,regular,8);y-=12;
+    if(research.sources.length){label("Fuentes públicas consultadas");for(const [index,source] of research.sources.entries())text(`${index+1}. ${source.title} - ${source.url}`,7.5,muted,regular,6);}
+  }
   page.drawText("Lectura preliminar. No constituye un diagnóstico definitivo ni sustituye la fase Understand del método UTS.",{x:margin,y:50,font:regular,size:6.5,color:muted});
   const pages=pdf.getPages();pages.forEach((current,index)=>{current.drawText(`ORCA / CONFIDENCIAL / ${index+1} DE ${pages.length}`,{x:margin,y:28,font:bold,size:6.5,color:muted});});
   return {bytes:await pdf.save(),result};
