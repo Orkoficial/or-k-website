@@ -77,10 +77,6 @@ const projects = [
     {src:"/assets/project-kliniu-film.mp4",duration:2000,startAt:5},
     {src:"/assets/project-kliniu-film.mp4",duration:3000,startAt:7},
   ]},
-  {title:"Peluvi",url:"https://peluvi.com",meta:"Producto digital / Identidad visual",year:"2026",kind:"image",media:"/assets/project-peluvi.jpg",motion:[
-    {src:"/assets/project-peluvi-film.mp4",duration:4000},
-    {src:"/assets/project-peluvi-ecosystem.png",duration:6000,kind:"image" as const},
-  ]},
   {title:"GEU",url:"https://geu-navy.vercel.app/",meta:"Identidad corporativa / Sistema visual",year:"2026",kind:"image",media:"/assets/project-ggeu.jpg"},
   {title:"Totalpars",url:"https://unipars-tech.vercel.app",meta:"Identidad corporativa / Diseño de marca",year:"2026",kind:"image",media:"/assets/project-totalpars.jpg"},
   {title:"Drokex",url:"https://drokex.com",meta:"Identidad de marca / Plataforma digital",year:"2026",kind:"image",media:"/assets/project-drokex.jpg"},
@@ -91,7 +87,6 @@ const teamMembers = [
   {name:"Maureen Blandón Zavala",role:"Financial Director",photo:"/assets/team-02.png",bio:"Empresaria nicaragüense e ingeniera industrial con más de 15 años de experiencia en el desarrollo y consolidación de marcas y proyectos empresariales en distintos países de Latinoamérica. Su trayectoria se ha enfocado en la optimización de procesos, la gestión organizacional, logística y financiera, así como en el fortalecimiento de estructuras empresariales con proyección regional."},
   {name:"Andrés Carrillo Ávila",role:"Executive Director",photo:"/assets/team-03.png",bio:"Empresario colombiano con más de 25 años de trayectoria en la creación y desarrollo de marcas, proyectos empresariales y oportunidades comerciales en distintos países de Latinoamérica. Su experiencia se ha construido principalmente a partir de iniciativas propias, liderando negocios desde su concepción con inversión y riesgo empresarial directo, combinando visión empresarial, creatividad y estrategias de marketing para el desarrollo y posicionamiento de proyectos."},
   {name:"Luis Urdaneta",role:"Commercial Director",photo:"/assets/team-04.png",bio:"Empresario colombiano con más de 30 años de experiencia en comunicación estratégica, desarrollo de marca y marketing. Es fundador de la reconocida agencia Audiovisual Huella Digital en Colombia, desde donde ha liderado proyectos para importantes compañías y organizaciones como Grupo Bolívar, MetLife, Alpina, Mercedes-Benz, Homecenter, DHL, Tetra Pak, Oracle, Avianca, PepsiCo, entre otras marcas de alto reconocimiento."},
-  {name:"Brandon Bustos",role:"Technology & Creativity Director",photo:"/assets/team-05.jpg",bio:"Diseñador Gráfico Publicitario e Ingeniero de Software con más de 10 años de experiencia en medios digitales, creatividad y tecnología.\n\nSu trayectoria integra dirección creativa, branding, estrategia digital, desarrollo web, aplicaciones móviles, UI/UX, automatización e inteligencia artificial, liderando proyectos desde la conceptualización hasta su implementación.\n\nSu enfoque conecta creatividad, negocio y tecnología para desarrollar ideas que no solo generan impacto visual, sino que se convierten en productos, plataformas y experiencias con valor real."},
 ];
 
 function ProjectMotion({poster,title,clips}:{poster:string;title:string;clips:{src:string;duration:number;kind?:"image"|"video";startAt?:number}[]}){
@@ -422,7 +417,7 @@ export default function Home() {
           <h2 className="utsCoverTitle"><span>UTS</span><i>Method.</i></h2>
           <div className="utsCoverSequence"><span>Understand</span><b>→</b><span>Transform</span><b>→</b><span>Scale</span></div>
           <p>UTS es la lógica con la que entendemos, transformamos y escalamos una organización. No son tres servicios aislados: son tres dimensiones de trabajo sobre el mismo negocio.</p>
-          <div className="howMethodRule"><b>Method rule</b><span>No transformamos lo que no hemos entendido. No escalamos lo que no hemos transformado.</span></div>
+          <div className="howMethodRule"><b>Method rule</b><span>No transformamos lo que no entendemos. No escalamos lo que no hemos transformado.</span></div>
           <button type="button" onClick={()=>{const rail=howRail.current;if(rail) rail.scrollLeft=rail.clientWidth;}}>Explorar las tres facetas <b>→</b></button>
           <small>Gira la rueda del mouse para avanzar · También puedes usar el trackpad</small>
         </section>
@@ -502,7 +497,7 @@ export default function Home() {
     }}>
       <span className="sectionNo">02 / Regla del método</span>
       <span className="manifestoHint" aria-hidden="true">{manifestoOrganized?"Composición activa":"Haz clic o desplázate para ordenar"} <i>↘</i></span>
-      <p className="manifesto"><span>No transformamos</span><span>lo que no hemos entendido.</span><span>No escalamos</span><span><em>lo que no hemos</em> transformado.</span></p>
+      <p className="manifesto"><span>No transformamos</span><span>lo que no entendemos.</span><span>No escalamos</span><span><em>lo que no hemos</em> transformado.</span></p>
       <aside className="manifestoAside"><span>Creativity<br/>with direction</span><b>↘</b><p>Convertimos atención en acción y estrategia en una presencia cultural propia.</p><button className="teamLaunch" type="button" onClick={(event)=>{event.stopPropagation();setTeamOpen(true);}}><span className="teamLaunchLabel">Conoce nuestro equipo</span> <span className="teamLaunchArrow">↗</span></button><small>Bogotá · Colombia<br/>04°36&apos;N / 74°05&apos;W</small></aside>
       <div className="introFoot"><span>Desde Colombia<br/>para cualquier pantalla.</span><span className="asterisk">✳</span></div>
     </section>
