@@ -55,7 +55,7 @@ export async function createPrequalificationPdf(answers:PrequalificationAnswers)
   label("Áreas por comprender");for(const item of (result.gaps.length?result.gaps:["Profundizar en la operación y sus prioridades estratégicas."]))text(`- ${item}`,10,ink,regular,8);
 
   addPage();
-  label("Datos de contacto");row("Empresa",answers.company);row("Contacto",answers.contact);row("Correo",answers.email);row("Website",answers.website||"No informado");row("Cómo conoció ORCA",answers.source);row("Años operando",answers.years);row("Canales",answers.channels);
+  label("Datos de contacto");row("Empresa",answers.company);row("Contacto",answers.contact);row("Correo",answers.email);row("WhatsApp",answers.whatsapp);row("Website",answers.website||"No informado");row("Cómo conoció ORCA",answers.source);row("Años operando",answers.years);row("Canales",answers.channels);
   label("Escala empresarial");row("Facturación mensual",answers.revenue);row("Personas",answers.employees);row("Costo mensual de personal",answers.payroll);
   label("Madurez y necesidad");row("Herramientas actuales",answers.tools);row("Reto principal",answers.challenge);
   label("Preparación");row("Decisión y urgencia",answers.urgency);row("Participación directiva",answers.leadership);row("Capacidad de inversión",answers.investment);

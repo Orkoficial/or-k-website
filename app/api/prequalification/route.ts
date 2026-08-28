@@ -23,7 +23,7 @@ export async function POST(request:Request) {
       to:[recipient],
       replyTo:answers.email,
       subject:`Preclasificación ORCA: ${answers.company} - ${result.compatibility}`,
-      html:`<div style="font-family:Arial,sans-serif;color:#111;max-width:620px"><p style="color:#ec007c;font-size:12px;letter-spacing:.12em">NUEVA PRECLASIFICACIÓN ORCA</p><h1>${escapeHtml(answers.company)}</h1><p><strong>Compatibilidad:</strong> ${result.compatibility} (${result.total}/100)</p><p><strong>Clasificación:</strong> ${result.companyClass}</p><p><strong>Contacto:</strong> ${escapeHtml(answers.contact)} · ${escapeHtml(answers.email)}</p><p>El reporte completo está adjunto en PDF.</p></div>`,
+      html:`<div style="font-family:Arial,sans-serif;color:#111;max-width:620px"><p style="color:#ec007c;font-size:12px;letter-spacing:.12em">NUEVA PRECLASIFICACIÓN ORCA</p><h1>${escapeHtml(answers.company)}</h1><p><strong>Compatibilidad:</strong> ${result.compatibility} (${result.total}/100)</p><p><strong>Clasificación:</strong> ${result.companyClass}</p><p><strong>Contacto:</strong> ${escapeHtml(answers.contact)} · ${escapeHtml(answers.email)}</p><p><strong>WhatsApp:</strong> ${escapeHtml(answers.whatsapp)}</p><p>El reporte completo está adjunto en PDF.</p></div>`,
       attachments:[{filename:`orca-preclasificacion-${slug(answers.company)}.pdf`,content:Buffer.from(bytes)}],
     });
     if(error) return NextResponse.json({error:"No fue posible enviar el reporte"},{status:502});

@@ -2,6 +2,7 @@ export type PrequalificationAnswers = {
   company: string;
   contact: string;
   email: string;
+  whatsapp: string;
   source: string;
   years: string;
   website: string;
@@ -46,6 +47,6 @@ export function scorePrequalification(a:PrequalificationAnswers) {
 export function isPrequalificationAnswers(value:unknown):value is PrequalificationAnswers {
   if(!value || typeof value!=="object") return false;
   const a=value as Record<string,unknown>;
-  const strings=["company","contact","email","source","years","revenue","employees","payroll","urgency","leadership","investment"];
-  return strings.every(key=>typeof a[key]==="string"&&a[key]!=="") && typeof a.website==="string" && Array.isArray(a.channels) && Array.isArray(a.tools) && Array.isArray(a.challenge) && a.challenge.length>0;
+  const strings=["company","contact","email","whatsapp","source","years","revenue","employees","payroll","urgency","leadership","investment"];
+  return strings.every(key=>typeof a[key]==="string"&&a[key]!=="") && /^\+?[\d\s()-]{7,20}$/.test(a.whatsapp as string) && typeof a.website==="string" && Array.isArray(a.channels) && Array.isArray(a.tools) && Array.isArray(a.challenge) && a.challenge.length>0;
 }
