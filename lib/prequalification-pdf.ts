@@ -10,8 +10,8 @@ const paper=rgb(0.96,0.95,0.92);
 export async function createPrequalificationPdf(answers:PrequalificationAnswers,research:CompanyResearch|null=null) {
   const result=scorePrequalification(answers);
   const pdf=await PDFDocument.create();
-  pdf.setTitle(`Preclasificación ORCA - ${answers.company}`);
-  pdf.setAuthor("ORCA");
+  pdf.setTitle(`Preclasificación OR-K - ${answers.company}`);
+  pdf.setAuthor("OR-K");
   pdf.setSubject("Reporte de preclasificación y compatibilidad empresarial");
   const regular=await pdf.embedFont(StandardFonts.Helvetica);
   const bold=await pdf.embedFont(StandardFonts.HelveticaBold);
@@ -23,7 +23,7 @@ export async function createPrequalificationPdf(answers:PrequalificationAnswers,
 
   const addPage=()=>{page=pdf.addPage([width,height]);page.drawRectangle({x:0,y:0,width,height,color:paper});y=height-margin;header();};
   const header=()=>{
-    page.drawText("ORCA",{x:margin,y,font:bold,size:22,color:pink});
+    page.drawText("OR-K",{x:margin,y,font:bold,size:22,color:pink});
     page.drawText("BUSINESS TRANSFORMATION",{x:width-margin-132,y:y+4,font:bold,size:7,color:muted});
     y-=38;
     page.drawLine({start:{x:margin,y},end:{x:width-margin,y},thickness:1,color:ink});
@@ -46,7 +46,7 @@ export async function createPrequalificationPdf(answers:PrequalificationAnswers,
   page.drawText("Y COMPATIBILIDAD EMPRESARIAL",{x:margin,y,font:bold,size:30,color:ink});y-=54;
   label("Empresa");text(answers.company,24,ink,bold);y-=10;
   page.drawRectangle({x:margin,y:y-64,width:width-margin*2,height:64,color:ink});
-  page.drawText("COMPATIBILIDAD ORCA",{x:margin+18,y:y-20,font:bold,size:7,color:paper});
+  page.drawText("COMPATIBILIDAD OR-K",{x:margin+18,y:y-20,font:bold,size:7,color:paper});
   page.drawText(safe(result.compatibility.toUpperCase()),{x:margin+18,y:y-48,font:bold,size:23,color:pink});
   page.drawText(`${result.total}/100`,{x:width-margin-72,y:y-43,font:bold,size:15,color:paper});y-=94;
   label("Clasificación preliminar");text(result.companyClass,18,ink,bold);y-=20;
@@ -56,7 +56,7 @@ export async function createPrequalificationPdf(answers:PrequalificationAnswers,
   label("Áreas por comprender");for(const item of (result.gaps.length?result.gaps:["Profundizar en la operación y sus prioridades estratégicas."]))text(`- ${item}`,10,ink,regular,8);
 
   addPage();
-  label("Identificación y contacto");row("Nombre comercial",answers.company);row("Razón social",answers.legalName);row("NIT",answers.taxId||"No informado");row("País y ciudad",answers.location);row("Website",answers.website||"No informado");row("LinkedIn",answers.linkedin||"No informado");row("Contacto",answers.contact);row("Correo",answers.email);row("WhatsApp",answers.whatsapp);row("Cómo conoció ORCA",answers.source);row("Años operando",answers.years);row("Canales",answers.channels);
+  label("Identificación y contacto");row("Nombre comercial",answers.company);row("Razón social",answers.legalName);row("NIT",answers.taxId||"No informado");row("País y ciudad",answers.location);row("Website",answers.website||"No informado");row("LinkedIn",answers.linkedin||"No informado");row("Contacto",answers.contact);row("Correo",answers.email);row("WhatsApp",answers.whatsapp);row("Cómo conoció OR-K",answers.source);row("Años operando",answers.years);row("Canales",answers.channels);
   label("Escala empresarial");row("Facturación mensual",answers.revenue);row("Personas",answers.employees);row("Costo mensual de personal",answers.payroll);
   label("Madurez y necesidad");row("Herramientas actuales",answers.tools);row("Reto principal",answers.challenge);
   label("Preparación");row("Decisión y urgencia",answers.urgency);row("Participación directiva",answers.leadership);row("Capacidad de inversión",answers.investment);
@@ -76,10 +76,10 @@ export async function createPrequalificationPdf(answers:PrequalificationAnswers,
     label("Comercio exterior");for(const item of (research.tradeSignals.length?research.tradeSignals:["No encontrado en fuentes públicas"]))text(`- ${item}`,9.5,ink,regular,8);y-=16;
     label("Oportunidades detectadas");for(const item of research.opportunities)text(`- ${item}`,9.5,ink,regular,8);y-=12;
     label("Riesgos y puntos por validar");for(const item of research.risks)text(`- ${item}`,9.5,ink,regular,8);y-=12;
-    label("Recomendaciones ORCA");for(const item of research.recommendations)text(`- ${item}`,9.5,ink,regular,8);y-=12;
+    label("Recomendaciones OR-K");for(const item of research.recommendations)text(`- ${item}`,9.5,ink,regular,8);y-=12;
     if(research.sources.length){label("Fuentes públicas consultadas");for(const [index,source] of research.sources.entries())text(`${index+1}. ${source.title} - ${source.url}`,7.5,muted,regular,6);}
   }
   page.drawText("Lectura preliminar. No constituye un diagnóstico definitivo ni sustituye la fase Understand del método UTS.",{x:margin,y:50,font:regular,size:6.5,color:muted});
-  const pages=pdf.getPages();pages.forEach((current,index)=>{current.drawText(`ORCA / CONFIDENCIAL / ${index+1} DE ${pages.length}`,{x:margin,y:28,font:bold,size:6.5,color:muted});});
+  const pages=pdf.getPages();pages.forEach((current,index)=>{current.drawText(`OR-K / CONFIDENCIAL / ${index+1} DE ${pages.length}`,{x:margin,y:28,font:bold,size:6.5,color:muted});});
   return {bytes:await pdf.save(),result};
 }
