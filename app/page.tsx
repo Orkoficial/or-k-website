@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import UtsSphere from "@/components/uts-sphere";
 
 const services = [
   {title:"Understand",axis:"Eje Z · Profundidad",desc:"Entendemos cómo funciona realmente el negocio: estrategia, estructura, procesos, personas, cultura, tecnología, datos, marca, ventas y oportunidades.",media:"/assets/sphere-growth-ork-final.png",motion:"/assets/sphere-growth-ork-final.mp4"},
@@ -44,6 +45,22 @@ const serviceDetails = [
       ["Analítica y expansión","Medición, nuevos mercados y modelos para crecer."],
     ]
   },
+];
+const utsStory = [
+  {number:"02",kicker:"Una empresa · Tres dimensiones",title:"La esfera",accent:"empresarial.",lead:"Vemos tu empresa como un todo.",items:[["Z · Understand","Profundidad · Entender la empresa desde adentro."],["X · Transform","Transversalidad · Transformar integralmente lo necesario."],["Y · Scale","Escalamiento · Llevar sus capacidades a un nuevo nivel."]]},
+  {number:"03",kicker:"El momentum de tu empresa",title:"¿En qué momento",accent:"está?",lead:"Tres momentos. Tres rutas. Un mismo propósito: evolucionar.",items:[["Growth","Prepararse · Aprender, estructurar y desarrollar capacidades."],["UTS Executive","Transformarse · Implementar UTS junto con OR-K."],["Enterprise","Evolucionar · Optimizar y escalar de forma continua."]]},
+  {number:"04",kicker:"01 · Understand",title:"Entender. Ordenar.",accent:"Fortalecer.",lead:"Entendemos y organizamos la empresa que existe.",media:"/assets/sphere-growth-ork-final.mp4",items:[["Personas","Talento, capacidades y liderazgo."],["Estructura","Roles, responsabilidades y cultura."],["Operación","Procesos, tecnología y resultados."]],quote:"Antes de transformar, construimos una base sólida."},
+  {number:"05",kicker:"Understand · En acción",title:"Organizamos la casa",accent:"desde adentro.",lead:"Entendemos mientras empezamos a actuar.",items:[["Estructura & liderazgo","Áreas · Roles · Responsabilidades"],["Equipo & cultura","Talento · Capacidades · Forma de trabajar"],["Procesos & comunicación","Flujos · Conductos · Protocolos"],["Marca & identidad","Branding · Imagen · Comunicación"],["Operación & comercial","Procesos · Canales · Oportunidades"],["Tecnología actual","ERP · Herramientas · Integraciones · Uso"]],tag:"Sonar meetings"},
+  {number:"06",kicker:"Resultado · Understand",title:"Una base sólida para",accent:"transformar.",lead:"Sabemos qué conservar, qué mejorar y qué transformar.",flow:["Claridad · Orden · Estructura · Prioridades","Realidad validada","Plan de transformación"]},
+  {number:"07",kicker:"02 · Transform",title:"Integrar. Digitalizar.",accent:"Automatizar.",lead:"Convertimos el entendimiento en capacidad.",media:"/assets/sphere-business-technology-ork-v2-motion.mp4",quote:"Lo que entendimos se convierte en soluciones."},
+  {number:"08",kicker:"Transform · En acción",title:"Construimos un ecosistema",accent:"conectado.",lead:"Un mismo ecosistema. Un mismo lenguaje tecnológico.",items:[["Comercial","CRM · E-commerce · Canales"],["Producción","Procesos · Planeación · Control"],["Logística","Inventarios · Despachos · Trazabilidad"],["Abastecimiento","Compras · Importaciones · Proveedores"],["Administración & finanzas","Información · Costos · Control"],["Gerencia","Datos · KPIs · Decisiones"]],tag:"ERP · Plataformas · Integraciones · IA · Automatización · Datos"},
+  {number:"09",kicker:"Resultado · Transform",title:"Una empresa integrada y",accent:"preparada.",lead:"Integración, automatización, trazabilidad e información crean capacidad para escalar.",flow:["Integración","Capacidad para escalar"],quote:"No automatizamos el desorden."},
+  {number:"10",kicker:"03 · Scale",title:"Implementar. Alinear.",accent:"Crecer.",lead:"Ponemos toda la organización en movimiento hacia una misma dirección.",media:"/assets/sphere-business-transformation-ork-final.mp4",quote:"No escalamos solamente las ventas. Escalamos la capacidad de la empresa."},
+  {number:"11",kicker:"Scale · En acción",title:"Orquestamos el",accent:"crecimiento.",lead:"Personas, procesos, tecnología, datos, operación y comercial avanzan coordinadamente.",flow:["Implementamos","Medimos","Controlamos","Optimizamos","Expandimos"],quote:"Hacemos que la transformación ocurra."},
+  {number:"12",kicker:"Resultado · Scale",title:"Una empresa en un",accent:"nuevo nivel.",lead:"Mayor capacidad. Mayor control. Mayor eficiencia. Crecimiento sostenible.",flow:["Nueva realidad","↻ Understand"],quote:"Cada vez que escalamos, tenemos una nueva empresa que volver a entender."},
+  {number:"13",kicker:"UTS es cíclico",title:"Evolución",accent:"continua.",lead:"UTS no es una intervención temporal. Es un sistema de sostenibilidad y evolución corporativa.",flow:["Understand · Entender la realidad","Transform · Construir capacidades","Scale · Llevarlas a un nuevo nivel","↻ Understand"]},
+  {number:"14",kicker:"El método debe permanecer",title:"El método permanece.",accent:"La empresa evoluciona.",lead:"OR-K puede liderarlo, acompañarlo y transferirlo.",items:[["Medir","Conocer la realidad con evidencia."],["Revisar","Encontrar nuevas prioridades."],["Transformar","Construir las capacidades necesarias."],["Evolucionar","Convertir UTS en disciplina interna."]],quote:"UTS está diseñado para permanecer en la organización, independientemente de quién lo opere."},
+  {number:"15",kicker:"Understand · Transform · Scale",title:"¿Hasta dónde puede llegar tu",accent:"empresa?",lead:"Una empresa que entiende su realidad puede transformarla. Una empresa transformada está preparada para escalar.",flow:["Understand","Transform","Scale"],quote:"No podemos transformar lo que no entendemos y no podemos escalar lo que no transformamos.",cta:true},
 ];
 const heroClips = [
   "/assets/ork-home-whale.mp4",
@@ -120,6 +137,7 @@ export default function Home() {
   const [howOpen, setHowOpen] = useState(false);
   const [teamOpen, setTeamOpen] = useState(false);
   const [howProgress, setHowProgress] = useState(0);
+  const [activeUtsAxis,setActiveUtsAxis] = useState<"X"|"Y"|"Z"|null>(null);
   const projectRail = useRef<HTMLDivElement>(null);
   const howRail = useRef<HTMLDivElement>(null);
   const howTarget = useRef<number | null>(null);
@@ -375,14 +393,14 @@ export default function Home() {
     const delta=Math.abs(event.deltaY)>=Math.abs(event.deltaX)?event.deltaY:event.deltaX;
     if(Math.abs(delta)<8||howWheelLocked.current) return;
     const current=Math.round(rail.scrollLeft/rail.clientWidth);
-    const next=Math.max(0,Math.min(serviceDetails.length,current+(delta>0?1:-1)));
+    const next=Math.max(0,Math.min(utsStory.length,current+(delta>0?1:-1)));
     if(next===current) return;
     howWheelLocked.current=true;
     rail.scrollTo({left:next*rail.clientWidth,behavior:"smooth"});
     window.setTimeout(()=>{howWheelLocked.current=false;},650);
   };
   const openHowAt = (index:number) => {
-    howTarget.current=index;
+    howTarget.current=[2,5,8][index];
     setHowOpen(true);
   };
   const advanceHero = () => {
@@ -420,10 +438,17 @@ export default function Home() {
           <button type="button" onClick={()=>{const rail=howRail.current;if(rail) rail.scrollLeft=rail.clientWidth;}}>Explorar las tres facetas <b>→</b></button>
           <small>Gira la rueda del mouse para avanzar · También puedes usar el trackpad</small>
         </section>
-        {serviceDetails.map((service,index)=><section className={`howServicePanel howTone${index+1}`} key={service.number}>
-          <div className="howServiceLead">{service.motion?<video className="howServiceMotion" muted loop playsInline preload="metadata" poster={service.media}><source src={service.motion} type="video/mp4"/></video>:<img className="howServiceMotion howServiceStill" src={service.media} alt=""/>}<div className="howServiceVeil"/><span>{service.number} / Faceta · {service.axis}</span><h2>{service.title}</h2><strong>{service.statement}</strong><p>{service.intro}</p><small>UTS by O R-K · {service.number}</small></div>
-          <div className="howOffers"><span>Cómo se activa esta faceta</span>{service.offers.map(([title,description],offerIndex)=><article style={{"--offer-index":offerIndex} as React.CSSProperties} key={title}><h3>{title}</h3><p>{description}</p></article>)}</div>
-          <button className="howNext" type="button" onClick={()=>{const rail=howRail.current;if(!rail)return;rail.scrollLeft=index===serviceDetails.length-1?0:rail.scrollLeft+rail.clientWidth;}} aria-label={index===serviceDetails.length-1?"Volver al inicio":"Siguiente faceta"}>{index===serviceDetails.length-1?"↺":"→"}</button>
+        {utsStory.map((slide,index)=><section className={`utsStoryPanel${slide.media?" hasMedia":""}${slide.number==="02"?" hasSphere":""}`} key={slide.number}>
+          {slide.media&&<><video className="utsStoryMedia" muted loop playsInline preload="metadata"><source src={slide.media} type="video/mp4"/></video><div className="utsStoryVeil"/></>}
+          {slide.number==="02"&&<><UtsSphere activeAxis={activeUtsAxis}/><span className="utsSphereHint">Arrastra para girar <b>↔</b></span></>}
+          <div className="utsStoryContent"><span className="utsStoryNo">{slide.number} / 15</span><p className="utsStoryKicker">{slide.kicker}</p><h2>{slide.title} <em>{slide.accent}</em></h2><p className="utsStoryLead">{slide.lead}</p>
+            {slide.items&&<div className={`utsStoryGrid${slide.number==="02"?" isAxes":""}`}>{slide.items.map(([title,text],itemIndex)=>{const axis=title.charAt(0) as "X"|"Y"|"Z";return <article key={title} tabIndex={slide.number==="02"?0:undefined} onPointerEnter={()=>slide.number==="02"&&setActiveUtsAxis(axis)} onPointerLeave={()=>slide.number==="02"&&setActiveUtsAxis(null)} onFocus={()=>slide.number==="02"&&setActiveUtsAxis(axis)} onBlur={()=>slide.number==="02"&&setActiveUtsAxis(null)}>{slide.number==="02"&&<span>0{itemIndex+1}</span>}<strong>{title}</strong><p>{text}</p></article>})}</div>}
+            {slide.flow&&<div className="utsStoryFlow">{slide.flow.map((step,stepIndex)=><div key={step}><strong>{step}</strong>{stepIndex<slide.flow!.length-1&&<b>→</b>}</div>)}</div>}
+            {slide.tag&&<div className="utsStoryTag">{slide.tag}</div>}
+            {slide.quote&&<blockquote>{slide.quote}</blockquote>}
+            {slide.cta&&<a className="utsStoryCta" href="/formulario">Empecemos por entenderla <b>↗</b></a>}
+          </div>
+          <button className="howNext" type="button" onClick={()=>{const rail=howRail.current;if(!rail)return;rail.scrollLeft=index===utsStory.length-1?0:rail.scrollLeft+rail.clientWidth;}} aria-label={index===utsStory.length-1?"Volver al inicio":"Siguiente escena"}>{index===utsStory.length-1?"↺":"→"}</button>
         </section>)}
       </div>
     </div>}
