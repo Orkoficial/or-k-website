@@ -61,9 +61,17 @@ function drawResearchPages(pdf:PDFDocument,fonts:Fonts,answers:PrequalificationA
   contentBlock(page,fonts,"BASE DE LA ESTIMACION",research.estimateBasis,52,156,491,88);
   const page2=pdf.addPage([595.28,841.89]);background(page2);header(page2,fonts,"OPORTUNIDADES Y RIESGOS",answers.company);
   bulletPanel(page2,fonts,52,564,239,136,"OPORTUNIDADES",research.opportunities,pink);bulletPanel(page2,fonts,304,564,239,136,"RIESGOS POR VALIDAR",research.risks,purple);
-  bulletPanel(page2,fonts,52,386,491,145,"RECOMENDACIONES OR-K",research.recommendations,ink);bulletPanel(page2,fonts,52,229,239,125,"SEÑALES FINANCIERAS",research.financialSignals,pink);
-  bulletPanel(page2,fonts,304,229,239,125,"COMERCIO EXTERIOR",research.tradeSignals,purple);text(page2,fonts,"FUENTES PUBLICAS",52,190,8,pink,fonts.bold);
-  research.sources.slice(0,5).forEach((source,index)=>wrapped(page2,fonts,`${index+1}. ${source.title} - ${source.url}`,52,170-index*24,491,7.5,10,muted,fonts.regular,2));
+  bulletPanel(page2,fonts,52,386,491,145,"RECOMENDACIONES OR-K",research.recommendations,ink);
+  bulletPanel(page2,fonts,52,178,239,176,"SEÑALES FINANCIERAS",research.financialSignals,pink,3);
+  bulletPanel(page2,fonts,304,178,239,176,"COMERCIO EXTERIOR",research.tradeSignals,purple,3);
+
+  const sourcesPage=pdf.addPage([595.28,841.89]);background(sourcesPage);header(sourcesPage,fonts,"FUENTES PUBLICAS",answers.company);
+  text(sourcesPage,fonts,"TRAZABILIDAD DE LA INVESTIGACION",52,724,8,pink,fonts.bold);
+  wrapped(sourcesPage,fonts,"Fuentes consultadas para complementar la lectura empresarial. La información debe validarse antes de tomar decisiones.",52,701,491,10,14,muted,fonts.regular,3);
+  let sourceY=650;
+  research.sources.slice(0,8).forEach((source,index)=>{
+    sourceY=sourceCard(sourcesPage,fonts,52,sourceY,491,index+1,source.title,source.url)-13;
+  });
 }
 
 function buildMetrics(a:PrequalificationAnswers,total:number):Metric[] {
@@ -89,6 +97,7 @@ function insightBox(page:PDFPage,fonts:Fonts,x:number,y:number,width:number,heig
 function sectionTable(page:PDFPage,fonts:Fonts,x:number,top:number,width:number,title:string,rows:[string,string][]) {text(page,fonts,title,x,top,7,pink,fonts.bold);let y=top-18;rows.forEach(([label,value],index)=>{const h=Math.max(29,wrap(fonts.regular,safe(value),8.3,width-90).slice(0,2).length*11+12);page.drawRectangle({x,y:y-h+7,width,height:h,color:index%2?white:rgb(.94,.93,.91)});text(page,fonts,label,x+9,y-8,6.5,muted,fonts.bold);wrapped(page,fonts,value||"No informado",x+89,y-8,width-98,8.3,11,ink,fonts.regular,2);y-=h;});return y;}
 function notice(page:PDFPage,fonts:Fonts,title:string,value:string,x:number,y:number){page.drawRectangle({x,y,width:491,height:55,color:softPink});text(page,fonts,title,x+16,y+34,7,pink,fonts.bold);wrapped(page,fonts,value,x+16,y+18,459,8.5,11,ink,fonts.regular,2);}
 function contentBlock(page:PDFPage,fonts:Fonts,title:string,value:string,x:number,y:number,width:number,height:number,highlight=false){page.drawRectangle({x,y,width,height,color:highlight?softPurple:white,borderColor:line,borderWidth:.5});text(page,fonts,title,x+14,y+height-20,7,highlight?purple:pink,fonts.bold);wrapped(page,fonts,value,x+14,y+height-39,width-28,9.1,12,ink,highlight?fonts.bold:fonts.regular,Math.floor((height-47)/12)+1);}
-function bulletPanel(page:PDFPage,fonts:Fonts,x:number,y:number,width:number,height:number,title:string,items:string[],accent:ReturnType<typeof rgb>){page.drawRectangle({x,y,width,height,color:white,borderColor:line,borderWidth:.5});text(page,fonts,title,x+15,y+height-23,7,accent,fonts.bold);let cursor=y+height-43;(items.length?items:["No encontrado en fuentes públicas"]).slice(0,4).forEach(item=>{page.drawCircle({x:x+18,y:cursor+2,size:2,color:accent});cursor=wrapped(page,fonts,item,x+29,cursor,width-44,8.2,10.5,ink,fonts.regular,2)-7;});}
+function bulletPanel(page:PDFPage,fonts:Fonts,x:number,y:number,width:number,height:number,title:string,items:string[],accent:ReturnType<typeof rgb>,maxLines=2){page.drawRectangle({x,y,width,height,color:white,borderColor:line,borderWidth:.5});text(page,fonts,title,x+15,y+height-23,7,accent,fonts.bold);let cursor=y+height-43;(items.length?items:["No encontrado en fuentes públicas"]).slice(0,4).forEach(item=>{page.drawCircle({x:x+18,y:cursor+2,size:2,color:accent});cursor=wrapped(page,fonts,item,x+29,cursor,width-44,8.2,10.5,ink,fonts.regular,maxLines)-7;});}
+function sourceCard(page:PDFPage,fonts:Fonts,x:number,top:number,width:number,index:number,title:string,url:string){const titleRows=wrap(fonts.bold,safe(title),9.2,width-62).slice(0,2),urlRows=wrap(fonts.regular,safe(url),7.2,width-62).slice(0,3);const height=24+titleRows.length*12+urlRows.length*9;page.drawRectangle({x,y:top-height,width,height,color:white,borderColor:line,borderWidth:.5});text(page,fonts,String(index).padStart(2,"0"),x+14,top-23,8,pink,fonts.bold);wrapped(page,fonts,title,x+48,top-20,width-62,9.2,12,ink,fonts.bold,2);wrapped(page,fonts,url,x+48,top-20-titleRows.length*12,width-62,7.2,9,muted,fonts.regular,3);return top-height;}
 function join(values:string[]){return values.length?values.join(", "):"No informado";}
 function companyClassLabel(a:PrequalificationAnswers){const size=["1–20","21–50","51–100","101–250","Más de 250"].indexOf(a.employees)+1,revenue=["$300M–$499M COP","$500M–$1.499M COP","$1.500M COP–USD 999.999","Más de USD 1 millón"].indexOf(a.revenue)+1;return size>=4||revenue>=4?"OR-K Enterprise":size>=2||revenue>=2?"OR-K Scale":"OR-K Growth";}
