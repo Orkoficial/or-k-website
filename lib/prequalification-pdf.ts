@@ -1,85 +1,94 @@
-import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
+import { PDFDocument, PDFFont, PDFPage, StandardFonts, rgb } from "pdf-lib";
 import { PrequalificationAnswers, scorePrequalification } from "@/lib/prequalification";
 import type { CompanyResearch } from "@/lib/company-research";
 
-const ink=rgb(0.07,0.06,0.06);
-const pink=rgb(0.93,0,0.45);
-const muted=rgb(0.42,0.4,0.4);
-const paper=rgb(0.96,0.95,0.92);
+const ink=rgb(.055,.05,.05), pink=rgb(.93,0,.45), purple=rgb(.42,.16,.72);
+const muted=rgb(.39,.37,.36), line=rgb(.79,.77,.73), paper=rgb(.965,.952,.925);
+const white=rgb(1,1,1), softPink=rgb(.985,.9,.945), softPurple=rgb(.92,.87,.97), softGray=rgb(.91,.9,.88);
+type Fonts={regular:PDFFont;bold:PDFFont};
+type Metric={label:string;value:number;detail:string;color:ReturnType<typeof rgb>};
 
 export async function createPrequalificationPdf(answers:PrequalificationAnswers,research:CompanyResearch|null=null) {
-  const result=scorePrequalification(answers);
-  const pdf=await PDFDocument.create();
-  pdf.setTitle(`Preclasificación OR-K - ${answers.company}`);
-  pdf.setAuthor("OR-K");
-  pdf.setSubject("Reporte de preclasificación y compatibilidad empresarial");
-  const regular=await pdf.embedFont(StandardFonts.Helvetica);
-  const bold=await pdf.embedFont(StandardFonts.HelveticaBold);
-  const width=595.28;
-  const height=841.89;
-  const margin=52;
-  let page=pdf.addPage([width,height]);
-  let y=height-margin;
-
-  const addPage=()=>{page=pdf.addPage([width,height]);page.drawRectangle({x:0,y:0,width,height,color:paper});y=height-margin;header();};
-  const header=()=>{
-    page.drawText("OR-K",{x:margin,y,font:bold,size:22,color:pink});
-    page.drawText("BUSINESS TRANSFORMATION",{x:width-margin-132,y:y+4,font:bold,size:7,color:muted});
-    y-=38;
-    page.drawLine({start:{x:margin,y},end:{x:width-margin,y},thickness:1,color:ink});
-    y-=28;
-  };
-  const safe=(text:string)=>text.replace(/[→↗]/g,"-").replace(/\u2011/g,"-");
-  const lines=(text:string,maxWidth:number,size:number,fontRef=regular)=>{
-    const words=safe(text).split(/\s+/);const out:string[]=[];let line="";
-    for(const word of words){const candidate=line?`${line} ${word}`:word;if(fontRef.widthOfTextAtSize(candidate,size)<=maxWidth)line=candidate;else{if(line)out.push(line);line=word;}}if(line)out.push(line);return out;
-  };
-  const text=(value:string,size=10,color=ink,fontRef=regular,indent=0,maxWidth=width-margin*2-indent)=>{
-    const wrapped=lines(value,maxWidth,size,fontRef);for(const line of wrapped){if(y<70)addPage();page.drawText(line,{x:margin+indent,y,font:fontRef,size,color});y-=size*1.45;}return wrapped.length;
-  };
-  const label=(value:string)=>{if(y<95)addPage();page.drawText(safe(value.toUpperCase()),{x:margin,y,font:bold,size:7,color:pink});y-=17;};
-  const row=(name:string,value:string|string[])=>{if(y<85)addPage();page.drawText(safe(name),{x:margin,y,font:bold,size:8.5,color:muted});const joined=Array.isArray(value)?value.join(", "):value;text(joined||"No informado",10,ink,regular,165,width-margin-165);y-=9;page.drawLine({start:{x:margin,y},end:{x:width-margin,y},thickness:.4,color:rgb(.75,.73,.7)});y-=16;};
-
-  page.drawRectangle({x:0,y:0,width,height,color:paper});
-  header();
-  page.drawText("REPORTE DE PRECLASIFICACION",{x:margin,y,font:bold,size:30,color:ink});y-=36;
-  page.drawText("Y COMPATIBILIDAD EMPRESARIAL",{x:margin,y,font:bold,size:30,color:ink});y-=54;
-  label("Empresa");text(answers.company,24,ink,bold);y-=10;
-  page.drawRectangle({x:margin,y:y-64,width:width-margin*2,height:64,color:ink});
-  page.drawText("COMPATIBILIDAD OR-K",{x:margin+18,y:y-20,font:bold,size:7,color:paper});
-  page.drawText(safe(result.compatibility.toUpperCase()),{x:margin+18,y:y-48,font:bold,size:23,color:pink});
-  page.drawText(`${result.total}/100`,{x:width-margin-72,y:y-43,font:bold,size:15,color:paper});y-=94;
-  label("Clasificación preliminar");text(result.companyClass,18,ink,bold);y-=20;
-  label("Lectura inicial");
-  text(result.compatibility==="Alta"?"La empresa presenta condiciones favorables para iniciar un proceso de transformación: escala, compromiso y capacidad de implementación.":result.compatibility==="Potencial"?"La empresa presenta características interesantes, aunque es necesario comprender mejor algunas condiciones antes de avanzar.":"La empresa está construyendo las condiciones necesarias para una futura etapa de transformación.",12,ink,regular);y-=22;
-  label("Señales positivas");for(const item of (result.positives.length?result.positives:["Existe intención de comprender la siguiente etapa de la empresa."]))text(`- ${item}`,10,ink,regular,8);y-=18;
-  label("Áreas por comprender");for(const item of (result.gaps.length?result.gaps:["Profundizar en la operación y sus prioridades estratégicas."]))text(`- ${item}`,10,ink,regular,8);
-
-  addPage();
-  label("Identificación y contacto");row("Nombre comercial",answers.company);row("Razón social",answers.legalName);row("NIT",answers.taxId||"No informado");row("País y ciudad",answers.location);row("Website",answers.website||"No informado");row("LinkedIn",answers.linkedin||"No informado");row("Contacto",answers.contact);row("Correo",answers.email);row("WhatsApp",answers.whatsapp);row("Cómo conoció OR-K",answers.source);row("Años operando",answers.years);row("Canales",answers.channels);
-  label("Escala empresarial");row("Facturación mensual",answers.revenue);row("Personas",answers.employees);row("Costo mensual de personal",answers.payroll);
-  label("Madurez y necesidad");row("Herramientas actuales",answers.tools);row("Reto principal",answers.challenge);
-  label("Preparación");row("Decisión y urgencia",answers.urgency);row("Participación directiva",answers.leadership);row("Capacidad de inversión",answers.investment);
-  if(research){
-    addPage();
-    label("Investigación pública asistida por IA");text("Este análisis combina fuentes públicas con inferencias de IA. Debe validarse antes de tomar decisiones.",9,muted);y-=16;
-    label("Resumen ejecutivo");text(research.summary,11);y-=14;
-    label("Industria y actividad");text(research.industry,10);y-=14;
-    label("Presencia digital observada");text(research.digitalPresence,10);y-=14;
-    addPage();
-    label("Inteligencia empresarial");text("Los rangos estimados no son declaraciones tributarias ni cifras contables confirmadas. Se incluyen para orientación comercial y requieren validación.",9,muted);y-=16;
-    label("Nivel de identificación");text(research.identityAssessment,10);y-=14;
-    label("Marcas, empresas o grupos relacionados");for(const item of (research.relatedEntities.length?research.relatedEntities:["No encontrado en fuentes públicas"]))text(`- ${item}`,9.5,ink,regular,8);y-=12;
-    label("Tamaño empresarial");text(research.companySize,10);y-=14;
-    label("Señales financieras públicas");for(const item of (research.financialSignals.length?research.financialSignals:["No encontrado en fuentes públicas"]))text(`- ${item}`,9.5,ink,regular,8);y-=12;
-    label("Ingresos anuales estimados");text(research.estimatedAnnualRevenue,11,ink,bold);y-=10;text(research.estimateBasis,9,muted);y-=14;
-    label("Comercio exterior");for(const item of (research.tradeSignals.length?research.tradeSignals:["No encontrado en fuentes públicas"]))text(`- ${item}`,9.5,ink,regular,8);y-=16;
-    label("Oportunidades detectadas");for(const item of research.opportunities)text(`- ${item}`,9.5,ink,regular,8);y-=12;
-    label("Riesgos y puntos por validar");for(const item of research.risks)text(`- ${item}`,9.5,ink,regular,8);y-=12;
-    label("Recomendaciones OR-K");for(const item of research.recommendations)text(`- ${item}`,9.5,ink,regular,8);y-=12;
-    if(research.sources.length){label("Fuentes públicas consultadas");for(const [index,source] of research.sources.entries())text(`${index+1}. ${source.title} - ${source.url}`,7.5,muted,regular,6);}
-  }
-  page.drawText("Lectura preliminar. No constituye un diagnóstico definitivo ni sustituye la fase Understand del método UTS.",{x:margin,y:50,font:regular,size:6.5,color:muted});
-  const pages=pdf.getPages();pages.forEach((current,index)=>{current.drawText(`OR-K / CONFIDENCIAL / ${index+1} DE ${pages.length}`,{x:margin,y:28,font:bold,size:6.5,color:muted});});
+  const result=scorePrequalification(answers), pdf=await PDFDocument.create();
+  pdf.setTitle(`Preclasificación OR-K - ${answers.company}`);pdf.setAuthor("OR-K");pdf.setSubject("Reporte ejecutivo de compatibilidad empresarial");
+  const fonts:Fonts={regular:await pdf.embedFont(StandardFonts.Helvetica),bold:await pdf.embedFont(StandardFonts.HelveticaBold)};
+  const metrics=buildMetrics(answers,result.total);
+  drawExecutivePage(pdf.addPage([595.28,841.89]),fonts,answers,result,metrics);
+  drawAnswersPage(pdf.addPage([595.28,841.89]),fonts,answers,metrics);
+  if(research) drawResearchPages(pdf,fonts,answers,research);
+  const pages=pdf.getPages();pages.forEach((page,index)=>drawFooter(page,fonts,index+1,pages.length));
   return {bytes:await pdf.save(),result};
 }
+
+function drawExecutivePage(page:PDFPage,fonts:Fonts,answers:PrequalificationAnswers,result:ReturnType<typeof scorePrequalification>,metrics:Metric[]) {
+  background(page);header(page,fonts,"REPORTE EJECUTIVO",answers.company);
+  text(page,fonts,"COMPATIBILIDAD EMPRESARIAL",52,748,8,pink,fonts.bold);
+  wrapped(page,fonts,answers.company,52,705,490,29,31,ink,fonts.bold,2);
+  page.drawRectangle({x:52,y:563,width:491,height:108,color:ink});
+  text(page,fonts,"COMPATIBILIDAD OR-K",72,642,7,paper,fonts.bold);text(page,fonts,result.compatibility.toUpperCase(),72,591,29,pink,fonts.bold);
+  text(page,fonts,String(result.total),414,584,47,white,fonts.bold);text(page,fonts,"/ 100",483,591,13,paper,fonts.bold);progress(page,52,545,491,8,result.total,pink,softGray);
+  text(page,fonts,"LECTURA RAPIDA",52,512,8,pink,fonts.bold);
+  const intro=result.compatibility==="Alta"?"La empresa muestra una combinación sólida de escala, liderazgo y capacidad de implementación. El siguiente paso recomendado es profundizar en la operación y priorizar una hoja de ruta.":result.compatibility==="Potencial"?"Hay condiciones interesantes para avanzar, aunque conviene alinear algunas variables antes de iniciar una transformación integral.":"La empresa está construyendo las condiciones para una siguiente etapa. El foco inicial debe estar en preparar liderazgo, inversión y madurez operativa.";
+  wrapped(page,fonts,intro,52,488,491,11.5,16,ink,fonts.regular,4);
+  const cardY=350,gap=9,cardW=(491-gap*3)/4;metrics.forEach((metric,index)=>metricCard(page,fonts,52+index*(cardW+gap),cardY,cardW,92,metric));
+  text(page,fonts,"QUE VEMOS",52,317,8,pink,fonts.bold);
+  insightBox(page,fonts,52,168,239,126,"FORTALEZAS",result.positives.length?result.positives:["Existe una intención clara de comprender la siguiente etapa."],pink);
+  insightBox(page,fonts,304,168,239,126,"POR COMPRENDER",result.gaps.length?result.gaps:["Profundizar en la operación y sus prioridades estratégicas."],purple);
+  page.drawRectangle({x:52,y:71,width:491,height:72,color:softPink});text(page,fonts,"SIGUIENTE PASO",70,117,7,pink,fonts.bold);
+  wrapped(page,fonts,"Sesión Understand: validar prioridades, responsables, restricciones y oportunidades antes de diseñar la transformación.",70,98,447,10.5,14,ink,fonts.bold,3);
+}
+
+function drawAnswersPage(page:PDFPage,fonts:Fonts,answers:PrequalificationAnswers,metrics:Metric[]) {
+  background(page);header(page,fonts,"MAPA DE LA EMPRESA","RESPUESTAS DECLARADAS");
+  text(page,fonts,"La información se organiza por bloques para identificar rápidamente escala, operación y preparación.",52,724,10,muted,fonts.regular);
+  const left=52,right=304,width=239;
+  sectionTable(page,fonts,left,656,width,"IDENTIFICACION",[["Nombre comercial",answers.company],["Razón social",answers.legalName],["NIT",answers.taxId||"No informado"],["Ubicación",answers.location],["Años operando",answers.years]]);
+  sectionTable(page,fonts,right,656,width,"CONTACTO",[["Contacto",answers.contact],["Correo",answers.email],["WhatsApp",answers.whatsapp],["Website",answers.website||"No informado"],["LinkedIn",answers.linkedin||"No informado"]]);
+  sectionTable(page,fonts,left,432,width,"ESCALA EMPRESARIAL",[["Facturación mensual",answers.revenue],["Personas",answers.employees],["Costo de personal",answers.payroll],["Clasificación",companyClassLabel(answers)]]);
+  sectionTable(page,fonts,right,432,width,"ECOSISTEMA ACTUAL",[["Canales",join(answers.channels)],["Herramientas",join(answers.tools)],["Origen del contacto",answers.source]]);
+  sectionTable(page,fonts,left,251,width,"PRIORIDADES",[["Retos seleccionados",join(answers.challenge)]]);
+  sectionTable(page,fonts,right,251,width,"PREPARACION",[["Urgencia",answers.urgency],["Liderazgo",answers.leadership],["Inversión",answers.investment]]);
+  text(page,fonts,"PERFIL EN PORCENTAJES",52,125,8,pink,fonts.bold);
+  metrics.slice(1).forEach((metric,index)=>{const y=100-index*20;text(page,fonts,metric.label,52,y,8,muted,fonts.bold);progress(page,155,y+1,330,7,metric.value,metric.color,softGray);text(page,fonts,`${metric.value}%`,500,y-1,9,ink,fonts.bold);});
+}
+
+function drawResearchPages(pdf:PDFDocument,fonts:Fonts,answers:PrequalificationAnswers,research:CompanyResearch) {
+  const page=pdf.addPage([595.28,841.89]);background(page);header(page,fonts,"INTELIGENCIA PUBLICA",answers.company);
+  notice(page,fonts,"INFORMACION ASISTIDA POR IA","Los hechos provienen de fuentes públicas; las estimaciones e inferencias deben validarse antes de tomar decisiones.",52,685);
+  contentBlock(page,fonts,"RESUMEN EJECUTIVO",research.summary,52,625,491,82);contentBlock(page,fonts,"INDUSTRIA Y ACTIVIDAD",research.industry,52,510,239,84);
+  contentBlock(page,fonts,"PRESENCIA DIGITAL",research.digitalPresence,304,510,239,84);contentBlock(page,fonts,"IDENTIFICACION",research.identityAssessment,52,392,491,86);
+  contentBlock(page,fonts,"TAMAÑO EMPRESARIAL",research.companySize,52,278,239,82);contentBlock(page,fonts,"INGRESOS ANUALES ESTIMADOS",research.estimatedAnnualRevenue,304,278,239,82,true);
+  contentBlock(page,fonts,"BASE DE LA ESTIMACION",research.estimateBasis,52,156,491,88);
+  const page2=pdf.addPage([595.28,841.89]);background(page2);header(page2,fonts,"OPORTUNIDADES Y RIESGOS",answers.company);
+  bulletPanel(page2,fonts,52,564,239,136,"OPORTUNIDADES",research.opportunities,pink);bulletPanel(page2,fonts,304,564,239,136,"RIESGOS POR VALIDAR",research.risks,purple);
+  bulletPanel(page2,fonts,52,386,491,145,"RECOMENDACIONES OR-K",research.recommendations,ink);bulletPanel(page2,fonts,52,229,239,125,"SEÑALES FINANCIERAS",research.financialSignals,pink);
+  bulletPanel(page2,fonts,304,229,239,125,"COMERCIO EXTERIOR",research.tradeSignals,purple);text(page2,fonts,"FUENTES PUBLICAS",52,190,8,pink,fonts.bold);
+  research.sources.slice(0,5).forEach((source,index)=>wrapped(page2,fonts,`${index+1}. ${source.title} - ${source.url}`,52,170-index*24,491,7.5,10,muted,fonts.regular,2));
+}
+
+function buildMetrics(a:PrequalificationAnswers,total:number):Metric[] {
+  const revenue=Math.max(0,["$300M–$499M COP","$500M–$1.499M COP","$1.500M COP–USD 999.999","Más de USD 1 millón"].indexOf(a.revenue)+1);
+  const size=Math.max(0,["1–20","21–50","51–100","101–250","Más de 250"].indexOf(a.employees)+1),years=Math.max(0,["Menos de 2","2 a 5","6 a 10","Más de 10 años"].indexOf(a.years)+1);
+  const urgency=Math.max(0,["Estamos explorando","Sí, este año","Sí, próximos 3 meses","Sí, es prioridad inmediata"].indexOf(a.urgency)+1);
+  const leadership=({"Sí":4,"Parcialmente":3,"Aún no está definido":1,"No":0} as Record<string,number>)[a.leadership]??0;
+  const investment=({"Sí":4,"Depende del proyecto":3,"Debemos estructurar presupuesto":2,"Prefiero conversarlo":2,"Actualmente no":0} as Record<string,number>)[a.investment]??0;
+  const maturity=Math.min(4,a.tools.filter(item=>item!=="Ninguna").length);
+  return [{label:"Compatibilidad",value:total,detail:"Puntaje integral",color:pink},{label:"Escala",value:Math.round(((revenue+size+years)/13)*100),detail:"Tamaño y trayectoria",color:purple},{label:"Madurez digital",value:Math.round((maturity/4)*100),detail:"Herramientas actuales",color:pink},{label:"Preparación",value:Math.round(((urgency+leadership+investment)/12)*100),detail:"Urgencia y capacidad",color:ink}];
+}
+
+function background(page:PDFPage){const {width,height}=page.getSize();page.drawRectangle({x:0,y:0,width,height,color:paper});}
+function header(page:PDFPage,fonts:Fonts,leftTitle:string,rightTitle:string){text(page,fonts,"OR-K",52,793,22,pink,fonts.bold);text(page,fonts,leftTitle,52,775,6.5,muted,fonts.bold);const rt=safe(rightTitle.toUpperCase());text(page,fonts,rt,543-fonts.bold.widthOfTextAtSize(rt,7),792,7,muted,fonts.bold);page.drawLine({start:{x:52,y:762},end:{x:543,y:762},thickness:1,color:ink});}
+function drawFooter(page:PDFPage,fonts:Fonts,current:number,total:number){page.drawLine({start:{x:52,y:48},end:{x:543,y:48},thickness:.45,color:line});text(page,fonts,"OR-K / CONFIDENCIAL",52,30,6.5,muted,fonts.bold);text(page,fonts,`${current} / ${total}`,520,30,6.5,muted,fonts.bold);}
+function text(page:PDFPage,_fonts:Fonts,value:string,x:number,y:number,size:number,color:ReturnType<typeof rgb>,font:PDFFont){page.drawText(safe(value),{x,y,size,font,color});}
+function wrapped(page:PDFPage,fonts:Fonts,value:string,x:number,y:number,maxWidth:number,size:number,lineHeight:number,color:ReturnType<typeof rgb>,font=fonts.regular,maxLines=99){const rows=wrap(font,safe(value),size,maxWidth).slice(0,maxLines);rows.forEach((row,index)=>text(page,fonts,row,x,y-index*lineHeight,size,color,font));return y-rows.length*lineHeight;}
+function wrap(font:PDFFont,value:string,size:number,maxWidth:number){const words=value.split(/\s+/),rows:string[]=[];let row="";for(const word of words){const candidate=row?`${row} ${word}`:word;if(font.widthOfTextAtSize(candidate,size)<=maxWidth)row=candidate;else{if(row)rows.push(row);row=word;}}if(row)rows.push(row);return rows;}
+function safe(value:string){return String(value).replace(/[→↗↘]/g,"-").replace(/[–—‑]/g,"-").replace(/[‘’]/g,"'").replace(/[“”]/g,'"');}
+function progress(page:PDFPage,x:number,y:number,width:number,height:number,value:number,color:ReturnType<typeof rgb>,track:ReturnType<typeof rgb>){page.drawRectangle({x,y,width,height,color:track});page.drawRectangle({x,y,width:Math.max(2,width*Math.min(100,Math.max(0,value))/100),height,color});}
+function metricCard(page:PDFPage,fonts:Fonts,x:number,y:number,width:number,height:number,metric:Metric){page.drawRectangle({x,y,width,height,color:white,borderColor:line,borderWidth:.5});text(page,fonts,metric.label.toUpperCase(),x+11,y+height-20,6.2,muted,fonts.bold);text(page,fonts,`${metric.value}%`,x+11,y+38,22,ink,fonts.bold);progress(page,x+11,y+24,width-22,5,metric.value,metric.color,softGray);wrapped(page,fonts,metric.detail,x+11,y+10,width-22,6.5,8,muted,fonts.regular,1);}
+function insightBox(page:PDFPage,fonts:Fonts,x:number,y:number,width:number,height:number,title:string,items:string[],accent:ReturnType<typeof rgb>){page.drawRectangle({x,y,width,height,color:white,borderColor:line,borderWidth:.5});page.drawRectangle({x,y:y+height-5,width,height:5,color:accent});text(page,fonts,title,x+15,y+height-24,7,accent,fonts.bold);let cursor=y+height-44;items.slice(0,3).forEach(item=>{page.drawCircle({x:x+18,y:cursor+2,size:2.5,color:accent});cursor=wrapped(page,fonts,item,x+29,cursor,width-43,8.2,11,ink,fonts.regular,2)-8;});}
+function sectionTable(page:PDFPage,fonts:Fonts,x:number,top:number,width:number,title:string,rows:[string,string][]) {text(page,fonts,title,x,top,7,pink,fonts.bold);let y=top-18;rows.forEach(([label,value],index)=>{const h=Math.max(29,wrap(fonts.regular,safe(value),8.3,width-90).slice(0,2).length*11+12);page.drawRectangle({x,y:y-h+7,width,height:h,color:index%2?white:rgb(.94,.93,.91)});text(page,fonts,label,x+9,y-8,6.5,muted,fonts.bold);wrapped(page,fonts,value||"No informado",x+89,y-8,width-98,8.3,11,ink,fonts.regular,2);y-=h;});return y;}
+function notice(page:PDFPage,fonts:Fonts,title:string,value:string,x:number,y:number){page.drawRectangle({x,y,width:491,height:55,color:softPink});text(page,fonts,title,x+16,y+34,7,pink,fonts.bold);wrapped(page,fonts,value,x+16,y+18,459,8.5,11,ink,fonts.regular,2);}
+function contentBlock(page:PDFPage,fonts:Fonts,title:string,value:string,x:number,y:number,width:number,height:number,highlight=false){page.drawRectangle({x,y,width,height,color:highlight?softPurple:white,borderColor:line,borderWidth:.5});text(page,fonts,title,x+14,y+height-20,7,highlight?purple:pink,fonts.bold);wrapped(page,fonts,value,x+14,y+height-39,width-28,9.1,12,ink,highlight?fonts.bold:fonts.regular,Math.floor((height-47)/12)+1);}
+function bulletPanel(page:PDFPage,fonts:Fonts,x:number,y:number,width:number,height:number,title:string,items:string[],accent:ReturnType<typeof rgb>){page.drawRectangle({x,y,width,height,color:white,borderColor:line,borderWidth:.5});text(page,fonts,title,x+15,y+height-23,7,accent,fonts.bold);let cursor=y+height-43;(items.length?items:["No encontrado en fuentes públicas"]).slice(0,4).forEach(item=>{page.drawCircle({x:x+18,y:cursor+2,size:2,color:accent});cursor=wrapped(page,fonts,item,x+29,cursor,width-44,8.2,10.5,ink,fonts.regular,2)-7;});}
+function join(values:string[]){return values.length?values.join(", "):"No informado";}
+function companyClassLabel(a:PrequalificationAnswers){const size=["1–20","21–50","51–100","101–250","Más de 250"].indexOf(a.employees)+1,revenue=["$300M–$499M COP","$500M–$1.499M COP","$1.500M COP–USD 999.999","Más de USD 1 millón"].indexOf(a.revenue)+1;return size>=4||revenue>=4?"OR-K Enterprise":size>=2||revenue>=2?"OR-K Scale":"OR-K Growth";}
