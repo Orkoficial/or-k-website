@@ -32,7 +32,7 @@ export default function DevelopmentPage() {
       </nav>
 
       <section className="devHero">
-        <div className="devHeroMedia" aria-hidden="true"><img src="/assets/development-hero-v2.png" alt="" /></div>
+        <div className="devHeroMedia" aria-hidden="true"><video autoPlay muted loop playsInline preload="metadata" poster="/assets/development-orca-hero-v3.png"><source src="/assets/development-orca-hero-loop.mp4" type="video/mp4" /></video></div>
         <div className="devHeroIndex" aria-hidden="true"><span>01</span><i /><small>DE LA IDEA A LA REALIDAD</small></div>
         <div className="devHeroCopy">
           <span className="devEyebrow">Ideas que se vuelven realidad</span>
